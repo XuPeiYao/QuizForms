@@ -9,11 +9,10 @@ using QuizForms.Quiz.Models;
 using QuizForms.Models;
 
 namespace QuizForms.Controllers {
-    public class UserController : QuizUserControllerBase<Guid, Form, Question, Record> {
-        public UserController(
-            QuizDbContext<Guid, Form, Question, Record> dbContext,
-            IAuthorizationProvider authProvider)
-            : base(dbContext, authProvider) {
+    public class RecordController : QuizRecordControllerBase<Guid, Form, Question, Record> {
+        public RecordController(
+            QuizDbContext<Guid, Form, Question, Record> dbContext)
+            : base(dbContext) {
         }
     }
 }
