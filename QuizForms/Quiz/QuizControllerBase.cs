@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using QuizForms.Quiz.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace QuizForms.Quiz {
     [Route("api/[controller]")]
@@ -58,6 +59,10 @@ namespace QuizForms.Quiz {
         public QuizControllerBase(
             QuizDbContext<IdType, FormType, QuestionType, RecordType> dbContext):base() {
             this.Database = dbContext;
+        }
+
+        public override void OnException(ActionExecutingContext executingContext, ActionExecutedContext executedContext, Exception exception) {
+            base.OnException(executingContext, executedContext, exception);
         }
     }
 }

@@ -65,7 +65,7 @@ namespace QuizForms.Quiz {
         /// <param name="order">顯示順序</param>
         /// <param name="type">類型</param>
         /// <returns>操作結果</returns>
-        [HttpPost("{form}")]
+        [HttpPost]
         [Authority(Minimum = UserTypes.Admin)]
         public async Task<JsonResult> Add(
             [Required][FromRoute]FormType form,

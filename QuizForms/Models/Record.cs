@@ -16,6 +16,10 @@ namespace QuizForms.Models
         public string UserId { get; set; }
         public string Value { get; set; }
 
+        public Record() {
+            Id = Guid.NewGuid();
+        }
+
         [NotMapped]
         [JsonIgnore]
         public DateTime Time {

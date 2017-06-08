@@ -12,9 +12,11 @@ using QuizForms.Models;
 using QuizForms.Quiz.Factories;
 using MySQL.Data.Entity.Extensions;
 using QuizForms.Quiz;
+using EzCoreKit.AspNetCore;
+using EzCoreKit.AspNetCore.Http;
 
 namespace QuizForms {
-    public class Startup {
+    public class Startup : StartupRoot{
         public Startup(IHostingEnvironment env) {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -26,33 +28,52 @@ namespace QuizForms {
             QuizFactory.ParseIdTypeFunc = (value) => {
                 return Guid.Parse(value);
             };
-        }
-
-        public IConfigurationRoot Configuration { get; }
+        } 
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-
             services.AddScoped<IAuthorizationProvider, AuthSampleProvider>();
-            services.AddDbContext<QuizDbContext<Guid, Form, Question, Record>>();
-            /*services.AddDbContext<QuizDbContext<Guid, Form, Question, Record>>(options => options.UseMySQL(
-                Configuration["connectionString"]
-            ));*/
+            // Adds a default in-memory implementation of IDistributedCache.
+            services.AddDistributedMemoryCache();
+
+            //services.AddTransient<AppExceptionFilterAttribute>();
 
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.CookieHttpOnly = true;
             });
-
+            
+            services.AddDbContext<QuizDbContext<Guid,Form,Question,Record>>(options => options.UseMySQL(
+                Configuration["connectionString"]
+            ));
+            //services.AddMvc();
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc(options => {
+                options.ModelBinderProviders.Insert(0, new AppModelBinderProvider());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory) {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddConsole(Configuration.GetSection("logging"));
             loggerFactory.AddDebug();
+
+            ConfigureDefaultFiles(app);
+            ConfigureErrorPages(app, env);
+
+            app.UseStaticFiles(new StaticFileOptions() {
+                ServeUnknownFileTypes = true
+            });
+
             app.UseSession();
+            app.UseCurrentHttpContext();
+            app.UseCors(builder => {
+                builder.AllowCredentials();
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+                builder.AllowAnyOrigin();
+            });
+
             app.UseMvc();
         }
     }

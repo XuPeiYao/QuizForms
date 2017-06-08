@@ -11,8 +11,12 @@ namespace QuizForms.Models
         public string Name { get; set; }
         public string OwnerId { get; set; }
         public bool Enable { get; set; }
-        public bool Anonymous { get; set; }
         public bool Rewriteable { get; set; }
         public int Order { get; set; }
+
+        public Form() {
+            Id = Guid.NewGuid();
+        }
+
     }
 }

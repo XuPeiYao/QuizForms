@@ -16,6 +16,9 @@ namespace QuizForms.Models {
         public QuestionTypes Type { get; set; }
         public bool Required { get; set; }
         public string Text { get; set; }
+        public Question() {
+            Id = Guid.NewGuid();
+        }
 
         [NotMapped]
         [JsonIgnore]
@@ -33,7 +36,7 @@ namespace QuizForms.Models {
             }
         }
 
-        private QuizDbContext<Guid, Form, Question, Record> GetCurrentDbContext() {
+        private static QuizDbContext<Guid, Form, Question, Record> GetCurrentDbContext() {
             return (QuizDbContext<Guid, Form, Question, Record>)
                 HttpContextFactory.CurrentHttpContext
                 .RequestServices.GetService(typeof(QuizDbContext<Guid, Form, Question, Record>));
