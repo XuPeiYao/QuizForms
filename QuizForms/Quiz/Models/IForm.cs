@@ -31,10 +31,10 @@ namespace QuizForms.Quiz.Models {
         /// </summary>
         bool Enable { get; set; }
 
-        /// <summary>
+        /*/// <summary>
         /// 是否匿名
         /// </summary>
-        bool Anonymous { get; set; }
+        bool Anonymous { get; set; }*/
 
         /// <summary>
         /// 是否允許重新填寫

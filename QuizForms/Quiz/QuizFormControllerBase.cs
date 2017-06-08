@@ -100,11 +100,21 @@ namespace QuizForms.Quiz {
         [HttpPost]
         [Authority(Minimum = UserTypes.Admin)]
         public async Task<JsonResult> Add(
+            [FromForm]int? order,
+            [FromForm]bool? rewriteable,
             [FromForm]string name = "未命名問卷") {
             FormType instance = default(FormType);
             Database.Forms.Add(instance = new FormType());
             instance.Name = name;
             instance.OwnerId = User.Id;
+
+            if (rewriteable.HasValue) {
+                instance.Rewriteable = rewriteable.Value;
+            }
+
+            if (order.HasValue) {
+                instance.Order = order.Value;
+            }
 
             return new ApiResult() {
                 Result = instance
@@ -148,13 +158,21 @@ namespace QuizForms.Quiz {
         public async Task<JsonResult> Update(
             [Required][FromRoute]FormType form,
             [FromForm]bool? enable,
+            [FromForm]int? order,
+            [FromForm]bool? rewriteable,
             [FromForm]string name = null) {
 
             if (form.OwnerId != User.Id) throw new UnauthorizedAccessException();
 
             if (enable.HasValue) form.Enable = enable.Value;
             if (name != null) form.Name = name;
-            
+            if (rewriteable.HasValue) {
+                form.Rewriteable = rewriteable.Value;
+            }
+
+            if (order.HasValue) {
+                form.Order = order.Value;
+            }
             await Database.SaveChangesAsync();
 
             return new ApiResult() {
