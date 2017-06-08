@@ -11,9 +11,9 @@ namespace QuizForms.Quiz {
     [Route("api/[controller]")]
     public class QuizControllerBase<IdType, FormType, QuestionType, RecordType>
         : EzAuthorityController<UserTypes>
-        where FormType : IForm<IdType>
-        where QuestionType : IQuestion<IdType>
-        where RecordType : IRecord<IdType> {
+        where FormType : class,IForm<IdType>,new ()
+        where QuestionType : class, IQuestion<IdType>, new()
+        where RecordType : class, IRecord<IdType>, new() {
 
         #region Session相關參數
         public const string SessionKeys_UserId = "UserId";

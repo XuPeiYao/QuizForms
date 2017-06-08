@@ -22,6 +22,10 @@ namespace QuizForms {
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            QuizFactory.ParseIdTypeFunc = (value) => {
+                return Guid.Parse(value);
+            };
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -29,7 +33,7 @@ namespace QuizForms {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
 
-            services.AddScoped<IAuthorizationProvider, AuthProvider>();
+            services.AddScoped<IAuthorizationProvider, AuthSampleProvider>();
             services.AddDbContext<QuizDbContext<Guid, Form, Question, Record>>();
             /*services.AddDbContext<QuizDbContext<Guid, Form, Question, Record>>(options => options.UseMySQL(
                 Configuration["connectionString"]

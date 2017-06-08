@@ -13,24 +13,24 @@ namespace QuizForms.Quiz.Models {
     /// <typeparam name="QuestionType">問卷題目類別</typeparam>
     /// <typeparam name="RecordType">問卷記錄類別</typeparam>
     public class QuizDbContext<IdType, FormType,QuestionType,RecordType> : DbContext
-        where FormType : IForm<IdType>
-        where QuestionType : IQuestion<IdType>
-        where RecordType : IRecord<IdType>{
+        where FormType : class,IForm<IdType>, new()
+        where QuestionType : class,IQuestion<IdType>, new()
+        where RecordType : class,IRecord<IdType>, new() {
 
         /// <summary>
         /// 問卷
         /// </summary>
-        public ISet<FormType> Forms { get; set; } 
+        public DbSet<FormType> Forms { get; set; } 
 
         /// <summary>
         /// 問卷題目
         /// </summary>
-        public ISet<QuestionType> Questions { get; set; }
+        public DbSet<QuestionType> Questions { get; set; }
 
         /// <summary>
         /// 問卷紀錄
         /// </summary>
-        public ISet<RecordType> Records { get; set; }
+        public DbSet<RecordType> Records { get; set; }
         
         public QuizDbContext(DbContextOptions<QuizDbContext<IdType, FormType, QuestionType, RecordType>> options)
             : base(options) {
