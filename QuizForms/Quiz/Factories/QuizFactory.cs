@@ -21,5 +21,11 @@ namespace QuizForms.Quiz.Factories {
             var attr = EnumFactory.GetCustomAttribute<NotQuestionAttribute>(question.Type);
             return attr == null;
         }
+
+        public static Func<string, object> ParseIdTypeFunc { get; set; }
+
+        public static IdType ParseId<IdType>(string value) {
+            return (IdType)ParseIdTypeFunc(value);
+        }
     }
 }
