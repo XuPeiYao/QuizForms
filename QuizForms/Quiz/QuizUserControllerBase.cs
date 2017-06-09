@@ -13,6 +13,7 @@ using System.Security.Authentication;
 namespace QuizForms.Quiz {
     public class QuizUserControllerBase<IdType, FormType, QuestionType, RecordType>
         : QuizControllerBase<IdType, FormType, QuestionType, RecordType>
+        where IdType : struct
         where FormType : class, IForm<IdType>, new()
         where QuestionType : class, IQuestion<IdType>, new()
         where RecordType : class, IRecord<IdType>, new() {

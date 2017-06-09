@@ -13,6 +13,7 @@ namespace QuizForms.Quiz.Models {
     /// <typeparam name="QuestionType">問卷題目類別</typeparam>
     /// <typeparam name="RecordType">問卷記錄類別</typeparam>
     public class QuizDbContext<IdType, FormType,QuestionType,RecordType> : DbContext
+        where IdType : struct
         where FormType : class,IForm<IdType>, new()
         where QuestionType : class,IQuestion<IdType>, new()
         where RecordType : class,IRecord<IdType>, new() {

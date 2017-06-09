@@ -37,8 +37,8 @@ namespace QuizForms.Quiz.Models {
         string Value { get; set; }
 
         /// <summary>
-        /// 時間
+        /// JS時間
         /// </summary>
-        DateTime Time { get; set; }
+        long Time { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace QuizForms.Quiz.Factories {
         /// <typeparam name="IdType">主鍵類型</typeparam>
         /// <param name="question">問卷題目實體</param>
         /// <returns>是否可作答</returns>
-        public static bool IsQuestion<IdType>(this IQuestion<IdType> question) {
+        public static bool IsQuestion<IdType>(this IQuestion<IdType> question) where IdType : struct {
             var attr = EnumFactory.GetCustomAttribute<NotQuestionAttribute>(question.Type);
             return attr == null;
         }

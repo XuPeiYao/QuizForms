@@ -40,6 +40,9 @@ namespace QuizForms.Quiz.Models {
                             Type.Name = list.GetType().GenericTypeArguments.First().Name + "List";
                             Type.Length = list.Count;
                         }
+                        if(value is IEnumerable enumValue) {
+                            Type.Name = enumValue.GetType().GenericTypeArguments.FirstOrDefault()?.Name + "List";
+                        }
                     } catch { }
                 }
             }

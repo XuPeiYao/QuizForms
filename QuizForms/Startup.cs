@@ -10,10 +10,10 @@ using Microsoft.Extensions.Logging;
 using QuizForms.Quiz.Models;
 using QuizForms.Models;
 using QuizForms.Quiz.Factories;
-using MySQL.Data.Entity.Extensions;
 using QuizForms.Quiz;
 using EzCoreKit.AspNetCore;
 using EzCoreKit.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuizForms {
     public class Startup : StartupRoot{
@@ -43,7 +43,7 @@ namespace QuizForms {
                 options.CookieHttpOnly = true;
             });
             
-            services.AddDbContext<QuizDbContext<Guid,Form,Question,Record>>(options => options.UseMySQL(
+            services.AddDbContext<QuizDbContext<Guid,Form,Question,Record>>(options => options.UseMySql(
                 Configuration["connectionString"]
             ));
             //services.AddMvc();

@@ -11,7 +11,7 @@ namespace QuizForms.Quiz.Models {
     /// 問卷題目
     /// </summary>
     /// <typeparam name="IdType">主鍵類型</typeparam>
-    public interface IQuestion<IdType> {
+    public interface IQuestion<IdType> where IdType : struct{
         /// <summary>
         /// 唯一識別號
         /// </summary>
@@ -26,7 +26,7 @@ namespace QuizForms.Quiz.Models {
         /// <summary>
         /// 父題目唯一識別號
         /// </summary>
-        IdType ParentId { get; set; }
+        IdType? ParentId { get; set; }
 
         /// <summary>
         /// 顯示順序
@@ -50,6 +50,6 @@ namespace QuizForms.Quiz.Models {
                 
         IQuestion<IdType> Parent { get;}
 
-        ICollection<IQuestion<IdType>> Children { get;  }
+        IQuestion<IdType>[] Children { get;  }
     }
 }

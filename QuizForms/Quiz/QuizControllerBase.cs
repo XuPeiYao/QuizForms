@@ -12,7 +12,8 @@ namespace QuizForms.Quiz {
     [Route("api/[controller]")]
     public class QuizControllerBase<IdType, FormType, QuestionType, RecordType>
         : EzAuthorityController<UserTypes>
-        where FormType : class,IForm<IdType>,new ()
+        where IdType : struct
+        where FormType : class, IForm<IdType>, new()
         where QuestionType : class, IQuestion<IdType>, new()
         where RecordType : class, IRecord<IdType>, new() {
 
@@ -25,10 +26,10 @@ namespace QuizForms.Quiz {
 
         public new LoginUser User {
             get {
-                if (HttpContext.Session.Keys.Contains(SessionKeys_UserId)) {                     return new LoginUser() {
-                        Id = HttpContext.Session.GetString(SessionKeys_UserId),
-                        Type = (UserTypes)Enum.Parse(typeof(UserTypes),HttpContext.Session.GetString(SessionKeys_Type))
-                    };
+                if (HttpContext.Session.Keys.Contains(SessionKeys_UserId)) { return new LoginUser() {
+                    Id = HttpContext.Session.GetString(SessionKeys_UserId),
+                    Type = (UserTypes)Enum.Parse(typeof(UserTypes), HttpContext.Session.GetString(SessionKeys_Type))
+                };
                 } else {
                     return null;
                 }

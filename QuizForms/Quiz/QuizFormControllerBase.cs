@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace QuizForms.Quiz {
     public class QuizFormControllerBase<IdType, FormType, QuestionType, RecordType>
         : QuizControllerBase<IdType, FormType, QuestionType, RecordType>
+        where IdType : struct
         where FormType : class, IForm<IdType>,new ()
         where QuestionType : class, IQuestion<IdType>,new ()
         where RecordType : class, IRecord<IdType>,new () {
@@ -115,6 +116,8 @@ namespace QuizForms.Quiz {
             if (order.HasValue) {
                 instance.Order = order.Value;
             }
+
+            await Database.SaveChangesAsync();
 
             return new ApiResult() {
                 Result = instance

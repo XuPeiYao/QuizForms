@@ -12,8 +12,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace QuizForms.Quiz {
-    public class QuizRecordControllerBase<IdType, FormType, QuestionType, RecordType>
+    public partial class QuizRecordControllerBase<IdType, FormType, QuestionType, RecordType>
         : QuizControllerBase<IdType, FormType, QuestionType, RecordType>
+        where IdType : struct
         where FormType : class, IForm<IdType>, new()
         where QuestionType : class, IQuestion<IdType>, new()
         where RecordType : class, IRecord<IdType>, new() {
@@ -155,7 +156,7 @@ namespace QuizForms.Quiz {
             }
             foreach (var item in record) {
                 item.FormId = form.Id;
-                item.Time = now;
+                item.Time = now.ToJsTime();
                 item.UserId = User.Id;
             }
             
@@ -195,6 +196,25 @@ namespace QuizForms.Quiz {
             await Database.SaveChangesAsync();
             return new ApiResult();
 
+        }
+
+
+
+        public enum DownloadTypes { Excel, CSV }
+        [HttpGet("download/{form}")]
+        public async Task<FileStreamResult> Download(
+            [Required][FromRoute]FormType form,
+            [FromQuery]DownloadTypes type = DownloadTypes.Excel,
+            [FromQuery]long start = 0,
+            [FromQuery]long end = -1) {
+            switch (type) {
+                case DownloadTypes.Excel:
+                    return await DownloadExcel(form, start, end);
+                case DownloadTypes.CSV:
+                    return await DownloadCSV(form, start, end);
+            }
+
+            return null;//error
         }
     }
 }

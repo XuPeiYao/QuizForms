@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace QuizForms.Quiz {
     public class QuizQuestionControllerBase<IdType, FormType, QuestionType, RecordType>
         : QuizControllerBase<IdType, FormType, QuestionType, RecordType>
+        where IdType : struct
         where FormType : class, IForm<IdType>, new()
         where QuestionType : class, IQuestion<IdType>, new()
         where RecordType : class, IRecord<IdType>, new() {
@@ -65,10 +66,12 @@ namespace QuizForms.Quiz {
         /// <param name="order">顯示順序</param>
         /// <param name="type">類型</param>
         /// <returns>操作結果</returns>
-        [HttpPost]
+        [HttpPost("{form}")]
+        [HttpPost("{form}/{question}")]
         [Authority(Minimum = UserTypes.Admin)]
         public async Task<JsonResult> Add(
             [Required][FromRoute]FormType form,
+            [FromRoute]QuestionType question,
             [FromForm]string text,
             [FromForm]int? order,
             [FromForm]QuestionTypes type = QuestionTypes.Text) {
@@ -80,12 +83,22 @@ namespace QuizForms.Quiz {
             instance.Type = type;
             instance.Text = text;
 
+            if(question != null) {
+                instance.ParentId = question.Id;
+            }
+            
             if (order.HasValue) {
                 instance.Order = order.Value;
             } else {
-                instance.Order = Database.Questions.Count(x => x.FormId.Equals(form.Id));
+                if (instance.ParentId.HasValue) {
+                    instance.Order = instance.Parent.Children.Count();
+                } else {
+                    instance.Order = Database.Questions.Count(x => x.FormId.Equals(form.Id));
+                }
             }
-            
+
+            await Database.SaveChangesAsync();
+
             return new ApiResult() {
                 Result = instance
             };

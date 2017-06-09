@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using EzCoreKit.Extensions;
 
-namespace QuizForms.Models
-{
+namespace QuizForms.Models{
+    [Table("Record")]
     public class Record : IRecord<Guid> {
         public Guid Id { get; set; }
         public Guid FormId { get; set; }
@@ -22,16 +22,16 @@ namespace QuizForms.Models
 
         [NotMapped]
         [JsonIgnore]
-        public DateTime Time {
+        public DateTime DateTime {
             get {
-                return DateTimeFactory.ConvertFromJsTime(JsTime);
+                return DateTimeFactory.ConvertFromJsTime(Time);
             }
             set {
-                JsTime = DateTimeFactory.ConvertToJsTime(value);
+                Time = DateTimeFactory.ConvertToJsTime(value);
             }
         }
 
         [Column("time")]
-        public long JsTime { get; set; }
+        public long Time { get; set; }
     }
 }
