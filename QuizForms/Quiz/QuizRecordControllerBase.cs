@@ -36,7 +36,7 @@ namespace QuizForms.Quiz {
         public async Task<JsonResult> Submit(
             [Required][FromRoute]FormType form,
             [Required][FromForm]string formJsonString,
-            [Required][FromForm]string code) {
+            [FromForm]string code) {
             if (!form.Enable) throw new UnauthorizedAccessException("該問卷已關閉");
             if (Database.Records.Any(x => x.FormId.Equals(form.Id) && x.UserId==User.Id)) {
                 throw new InvalidOperationException("您已經作答過此問卷");
@@ -46,7 +46,7 @@ namespace QuizForms.Quiz {
 
             var questions = (from t in Database.Questions
                              //過濾出可回答問題
-                             where t.FormId.Equals(form) && t.ParentId == null
+                             where t.FormId.Equals(form.Id) && t.ParentId == null
                              select t).ToArray().Where(x => QuizFactory.IsQuestion(x));
 
             var rawRecord = JObject.Parse(formJsonString);
