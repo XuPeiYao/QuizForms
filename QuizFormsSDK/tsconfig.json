@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es5",
+    "module": "system",
+    "lib": [ "dom", "es6" ],
+    "outFile": "dist/quizForms.js",
+    "declaration": true    
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot"
+  ]
+}
