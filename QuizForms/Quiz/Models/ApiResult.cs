@@ -43,6 +43,9 @@ namespace QuizForms.Quiz.Models {
                         if(value is IEnumerable enumValue) {
                             Type.Name = enumValue.GetType().GenericTypeArguments.FirstOrDefault()?.Name + "List";
                         }
+                        if(value is Exception ex) {
+                            _Result = ex.Message;
+                        }
                     } catch { }
                 }
             }

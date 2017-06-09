@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace QuizForms.Models
 {
-    public class AuthSampleProvider : IAuthorizationProvider {
-        public AuthSampleProvider(QuizDbContext<Guid, Form, Question, Record> dbcontext) {
+    public class UserAuthProvider : IAuthorizationProvider {
+        public UserAuthProvider(QuizDbContext<Guid, Form, Question, Record> dbcontext) {
 
         }
         public UserTypes Authorize(string userId, string password) {

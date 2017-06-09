@@ -63,6 +63,13 @@ namespace QuizForms.Quiz {
         }
 
         public override void OnException(ActionExecutingContext executingContext, ActionExecutedContext executedContext, Exception exception) {
+            if (executingContext != null) {
+                executingContext.Result = (JsonResult)new ApiResult() { Result = exception };
+            } else {
+                executedContext.Result = (JsonResult)new ApiResult() { Result = exception };
+                executedContext.ExceptionHandled = true;
+            }
+
             base.OnException(executingContext, executedContext, exception);
         }
     }

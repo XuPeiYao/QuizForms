@@ -32,7 +32,7 @@ namespace QuizForms {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            services.AddScoped<IAuthorizationProvider, AuthSampleProvider>();
+            services.AddScoped<IAuthorizationProvider, UserAuthProvider>();
             // Adds a default in-memory implementation of IDistributedCache.
             services.AddDistributedMemoryCache();
 
