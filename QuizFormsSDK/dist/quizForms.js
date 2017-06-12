@@ -137,6 +137,23 @@ var QuizForms;
             });
         };
         /**
+         * 取得指定問卷
+         * @param id 唯一識別號
+         */
+        Form.get = function (id) {
+            return __awaiter(this, void 0, void 0, function () {
+                var response;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, QuizForms.createHttpClient().getAsync(QuizForms.SystemVars.apiUrl + "form/" + id)];
+                        case 1:
+                            response = (_a.sent()).toJSON();
+                            return [2 /*return*/, QuizForms.loadFromJSON(Form, response.result)];
+                    }
+                });
+            });
+        };
+        /**
          * 取得問卷列表
          * @param filter 篩選方式
          */
@@ -150,7 +167,7 @@ var QuizForms;
                                 filter: ListFilters[filter]
                             })];
                         case 1:
-                            response = (_a.sent()).toJSON();
+                            response = (_a.sent()).toJSON().result;
                             result = [];
                             for (i = 0; i < response.length; i++) {
                                 result.push(Form, response[i]);
@@ -171,7 +188,7 @@ var QuizForms;
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, QuizForms.createHttpClient().getAsync(QuizForms.SystemVars.apiUrl + "question/list/" + form.id)];
                         case 1:
-                            response = (_a.sent()).toJSON();
+                            response = (_a.sent()).toJSON().result;
                             result = [];
                             for (i = 0; i < response.length; i++) {
                                 result.push(QuizForms.Question, response[i]);
@@ -192,7 +209,7 @@ var QuizForms;
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, QuizForms.createHttpClient().getAsync(QuizForms.SystemVars.apiUrl + "form/" + form.id + "/isWrited")];
                         case 1:
-                            response = (_a.sent()).toJSON();
+                            response = (_a.sent()).toJSON().result;
                             return [2 /*return*/, response.result];
                     }
                 });
@@ -222,7 +239,7 @@ var QuizForms;
                             return [4 /*yield*/, client.postAsync(QuizForms.SystemVars.apiUrl + "form", null, postData)];
                         case 1:
                             response = (_a.sent()).toJSON();
-                            return [2 /*return*/, QuizForms.loadFromJSON(Form, response)];
+                            return [2 /*return*/, QuizForms.loadFromJSON(Form, response.result)];
                     }
                 });
             });
@@ -465,6 +482,47 @@ var QuizForms;
     var Question = (function () {
         function Question() {
         }
+        /**
+         * 取得子題目
+         */
+        Question.prototype.getChildren = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            if (!!this.children) return [3 /*break*/, 2];
+                            _a = this;
+                            return [4 /*yield*/, Question.getChildren(this)];
+                        case 1:
+                            _a.children = _b.sent();
+                            _b.label = 2;
+                        case 2: return [2 /*return*/, this.children];
+                    }
+                });
+            });
+        };
+        /**
+         * 取得題目的子題目
+         * @param question 題目
+         */
+        Question.getChildren = function (question) {
+            return __awaiter(this, void 0, void 0, function () {
+                var response, result, i;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, QuizForms.createHttpClient().getAsync(QuizForms.SystemVars.apiUrl + "question/list/" + question.id)];
+                        case 1:
+                            response = (_a.sent()).toJSON().result;
+                            result = [];
+                            for (i = 0; i < response.length; i++) {
+                                result.push(Question, response[i]);
+                            }
+                            return [2 /*return*/, result];
+                    }
+                });
+            });
+        };
         return Question;
     }());
     QuizForms.Question = Question;

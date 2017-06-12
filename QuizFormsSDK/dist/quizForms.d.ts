@@ -65,6 +65,11 @@ declare module QuizForms {
          */
         update(): Promise<void>;
         /**
+         * 取得指定問卷
+         * @param id 唯一識別號
+         */
+        static get(id: any): Promise<Form>;
+        /**
          * 取得問卷列表
          * @param filter 篩選方式
          */
@@ -205,9 +210,18 @@ declare module QuizForms {
          */
         parent: Question;
         /**
-         * 子節點
+         * 子題目
          */
         children: Question[];
+        /**
+         * 取得子題目
+         */
+        getChildren(): Promise<Question[]>;
+        /**
+         * 取得題目的子題目
+         * @param question 題目
+         */
+        static getChildren(question: Question): Promise<Question[]>;
     }
 }
 declare module QuizForms {

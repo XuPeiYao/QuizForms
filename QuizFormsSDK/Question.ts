@@ -90,11 +90,34 @@
         public parent: Question;
 
         /**
-         * 子節點
+         * 子題目
          */
         public children: Question[];
 
+        /**
+         * 取得子題目
+         */
+        public async getChildren(): Promise<Question[]> {
+            if (!this.children) {
+                this.children = await Question.getChildren(this);
+            }
+            return this.children;
+        }
 
+        /**
+         * 取得題目的子題目
+         * @param question 題目
+         */
+        public static async getChildren(question: Question): Promise<Question[]> {
+            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "question/list/" + question.id)).toJSON().result;
+
+            var result = [];
+            for (var i = 0; i < response.length; i++) {
+                result.push(Question, response[i]);
+            }
+
+            return result;
+        }
 
     }
 }
