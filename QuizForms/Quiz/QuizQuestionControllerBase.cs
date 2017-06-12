@@ -116,11 +116,14 @@ namespace QuizForms.Quiz {
             var form = Database.Forms.First(x => x.Id.Equals(question.FormId));
             if (form.OwnerId != User.Id) throw new UnauthorizedAccessException();
 
-            Database.Records.RemoveRange(from t in Database.Records
-                                         where question.Id.Equals(t.QuestionId)
-                                         select t);
-
-            Database.Questions.Remove(question);
+            void DeepRemove(QuestionType target){
+                if(target.Children.Length > 0) {
+                    DeepRemove(target);
+                } else {
+                    Database.Questions.Remove(target);
+                }
+            }
+            
             await Database.SaveChangesAsync();
 
             return new ApiResult();
