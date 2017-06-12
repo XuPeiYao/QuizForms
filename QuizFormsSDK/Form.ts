@@ -159,7 +159,18 @@
         public static async delete(form: Form): Promise<void> {
             await createHttpClient().deleteAsync(SystemVars.apiUrl + "form/" + form.id);
         }
+
+        /**
+         * 更新問卷
+         * @param form 問卷
+         */
         public static async update(form: Form): Promise<void> {
+            await createHttpClient().putAsync(SystemVars.apiUrl + "form/" + form.id, null, {
+                enable: form.enable,
+                order: form.order,
+                rewriteable: form.rewriteable,
+                name: form.name
+            });
         }
     }
 }
