@@ -17,26 +17,44 @@
          */
         TopAdmin = 2,
     }
+    /**
+     * 使用者資訊
+     */
     export class User {
         /**
-         * 使用者類型
+         * 類型
          */
         public type: UserTypes;
 
         /**
-         * 使用者唯一識別號
+         * 唯一識別號
          */
         public id: UserTypes;
 
+
+
         /**
-         * 登入
-         * @param id
-         * @param password
+         * 登入並取得使用者資訊
+         * @param id 唯一識別號
+         * @param password 密碼
+         * @param isAdmin 是否取得管理權限
          */
-        public static async login(id: string, password: string): Promise<User> {
-            var client = new HttpClient();
-            var response = await client.postAsync("");
+        public static async login(id: string, password: string, isAdmin: boolean = false): Promise<User> {
+            var client = createHttpClient();
             
+            var response = await client.postAsync(SystemVars.apiUrl + "user/status", null, {
+                id: id,
+                password: password,
+                isAdmin: isAdmin
+            });
+            return <User>loadFromJSON(User,response.toJSON());
+        }
+
+        /**
+         * 登出目前使用身分
+         */
+        public static async logout(): Promise<void> {
+            await createHttpClient().deleteAsync(SystemVars.apiUrl + "user/status");
         }
     }
 }
