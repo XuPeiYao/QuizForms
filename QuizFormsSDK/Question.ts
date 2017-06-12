@@ -25,7 +25,7 @@
         Checkbox,
         /** 
          * 五等級多選一
-         */ 
+         */
         Level,
         /**
          * 文字輸入框
@@ -105,11 +105,19 @@
         }
 
         /**
+         * 新增子題目
+         * @param question 子題目
+         */
+        public async addChildren(question: Question): Promise<void> {
+            await Question.add(this, question);
+        }
+        
+        /**
          * 取得題目的子題目
          * @param question 題目
          */
         public static async getChildren(question: Question): Promise<Question[]> {
-            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "question/list/" + question.id)).toJSON().result;
+            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "question/list/" + (question.id || question))).toJSON().result;
 
             var result = [];
             for (var i = 0; i < response.length; i++) {
@@ -118,7 +126,7 @@
 
             return result;
         }
-
+        
         /**
          * 建立子問題至指定的問題下
          * @param form 問卷
@@ -132,8 +140,21 @@
             parent: Question,
             type: QuestionTypes,
             text: string,
-            order: number = null) : Promise<Question> {
-            
+            order: number = null): Promise<Question> {
+            var postData = {
+                text: text,
+                type: QuestionTypes[type]
+            }
+            if (order != null) postData['order'] = order;
+
+            var response;
+            if (parent) {
+                response = await createHttpClient().postAsync(SystemVars.apiUrl + "question/" + (form.id || form) + "/" + (parent.id || parent), null, postData);
+            } else {
+                response = await createHttpClient().postAsync(SystemVars.apiUrl + "question/" + (form.id || form), null, postData);
+            }
+            response = response.result;
+            return loadFromJSON(Question, response);
         }
 
         /**
@@ -151,6 +172,7 @@
          * @param question 問題
          */
         public static async remove(question: Question): Promise<void> {
+            await createHttpClient().deleteAsync(SystemVars.apiUrl + "question/" + question.id);
         }
     }
 }
