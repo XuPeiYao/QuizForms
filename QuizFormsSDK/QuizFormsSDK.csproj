@@ -73,7 +73,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Form.ts" />
     <TypeScriptCompile Include="HttpClient.ts" />
+    <TypeScriptCompile Include="Question.ts" />
     <TypeScriptCompile Include="SystemVars.ts" />
     <TypeScriptCompile Include="User.ts" />
   </ItemGroup>
