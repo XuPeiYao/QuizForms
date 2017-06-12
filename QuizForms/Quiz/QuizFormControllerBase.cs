@@ -165,10 +165,18 @@ namespace QuizForms.Quiz {
             Database.Records.RemoveRange(from t in Database.Records
                                          where t.FormId.Equals(form.Id)
                                          select t);
-            
-            Database.Questions.RemoveRange(from t in Database.Questions
-                                           where t.FormId.Equals(form.Id)
-                                           select t);
+
+            void DeepRemove(QuestionType target){
+                if (target.Children.Length > 0) {
+                    DeepRemove(target);
+                } else {
+                    Database.Questions.Remove(target);
+                }
+            }
+
+            foreach (var question in Database.Questions.Where(x => x.FormId.Equals(form.Id))) {
+                DeepRemove(question);
+            }
 
             Database.Forms.Remove(form);
             await Database.SaveChangesAsync();
