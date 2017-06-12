@@ -62,6 +62,7 @@ namespace QuizForms.Quiz {
         /// 加入新題目
         /// </summary>
         /// <param name="form">所屬問卷實體</param>
+        /// <param name="parent">父題目</param>
         /// <param name="text">題目內容</param>
         /// <param name="order">顯示順序</param>
         /// <param name="type">類型</param>
@@ -83,8 +84,8 @@ namespace QuizForms.Quiz {
             instance.Type = type;
             instance.Text = text;
 
-            if(question != null) {
-                instance.ParentId = question.Id;
+            if(parent != null) {
+                instance.ParentId = parent.Id;
             }
             
             if (order.HasValue) {
