@@ -1,62 +1,62 @@
-ï»¿module QuizForms {
+﻿module QuizForms {
     /**
-     * åè¡¨éæ¿¾
+     * 列表過濾
      */
     export enum ListFilters {
         /**
-         * ææåå·
+         * 所有問卷
          */
         All,
         /**
-         * åç¨çåå·
+         * 啟用的問卷
          */
         Enable,
         /**
-         * ééçåå·
+         * 關閉的問卷
          */
         Disable
     }
     /**
-     * åå·
+     * 問卷
      */
     export class Form {
         /**
-         * å¯ä¸è­å¥è
+         * 唯一識別號
          */
         public id: any;
 
         /**
-         * åç¨±
+         * 名稱
          */
         public name: string;
 
         /**
-         * æ¯å¦åç¨
+         * 是否啟用
          */
         public enable: boolean;
 
         /**
-         * å¯å¦éæ°å¡«å¯«
+         * 可否重新填寫
          */
         public rewriteable: boolean;
 
         /**
-         * é¡¯ç¤ºé åº
+         * 顯示順序
          */
         public order: number;
 
         /**
-         * åå·é¡ç®
+         * 問卷題目
          */
         public questions: Question[];
 
         /**
-         * æ¯å¦å·²ç¶å¯«é
+         * 是否已經寫過
          */
         public writed: boolean = null;
 
         /**
-         * åå¾åå·åé¡
+         * 取得問卷問題
          */
         public async getQuestions() : Promise<Question[]> {
             if (!this.questions) {
@@ -66,7 +66,7 @@
         }
 
         /**
-         * æ¯å¦å·²ç¶å¯«é
+         * 是否已經寫過
          */
         public async isWrited(): Promise<boolean> {
             if (this.writed == undefined || this.writed == null) {
@@ -76,7 +76,7 @@
         }
 
         /**
-         * è®åå®æ´åå·å§å®¹(å¦:åé¡)
+         * 讀取完整問卷內容(如:問題)
          */
         public async load(): Promise<void> {
             await this.getQuestions();
@@ -84,15 +84,15 @@
         }
 
         /**
-         * æ´æ°
+         * 更新
          */
         public async update(): Promise<void> {
             await Form.update(this);
         }
 
         /**
-         * åå¾åå·åè¡¨
-         * @param filter ç¯©é¸æ¹å¼
+         * 取得問卷列表
+         * @param filter 篩選方式
          */
         public static async getList(filter: ListFilters = ListFilters.All): Promise<Form[]> {
             var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "form/list", null, {
@@ -108,8 +108,8 @@
         }
 
         /**
-         * åå¾æå®åå·ææåé¡
-         * @param form åå·
+         * 取得指定問卷所有問題
+         * @param form 問卷
          */
         public static async getQuestions(form: Form): Promise<Question[]> {
             var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "question/list/" + form.id)).toJSON();
@@ -123,8 +123,8 @@
         }
 
         /**
-         * åå¾åå·æ¯å¦å·²ç¶å¯«é
-         * @param form åå·
+         * 取得問卷是否已經寫過
+         * @param form 問卷
          */
         public static async isWrited(form: Form): Promise<boolean> {
             var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "form/" + form.id + "/isWrited")).toJSON();
@@ -132,4 +132,34 @@
             return response.result;
         }
 
+        /**
+         * 建立新的問卷
+         * @param name 名稱
+         * @param rewriteable 是否可以重寫問卷
+         * @param order 顯示順序
+         */
+        public static async create(name: string, rewriteable: boolean = false, order: number = null)
+            : Promise<Form>{
+            var postData = {
+                name: name,
+                rewriteable: rewriteable
+            };
+            if (order) postData['order'] = order;
+
+            var client = createHttpClient();
+            var response = (await client.postAsync(SystemVars.apiUrl + "form", null, postData)).toJSON();
+
+            return loadFromJSON(Form, response);
+        }
+
+        /**
+         * 刪除問卷
+         * @param form 問卷
+         */
+        public static async delete(form: Form): Promise<void> {
+            await createHttpClient().deleteAsync(SystemVars.apiUrl + "form/" + form.id);
+        }
+        public static async update(form: Form): Promise<void> {
+        }
+    }
 }
