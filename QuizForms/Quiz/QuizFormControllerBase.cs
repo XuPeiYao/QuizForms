@@ -63,7 +63,7 @@ namespace QuizForms.Quiz {
         /// <returns>問卷結果</returns>
         [HttpGet("list")]
         [Authority(Minimum = UserTypes.Normal)]
-        public async Task<JsonResult> List(ListFilters filter = ListFilters.Enable) {
+        public async Task<JsonResult> List(ListFilters filter = ListFilters.All) {
             IEnumerable<FormType> result = null;
             switch (UserAuthority) {
                 case UserTypes.Normal:
@@ -90,6 +90,33 @@ namespace QuizForms.Quiz {
             }
             return new ApiResult() {
                 Result = result
+            };
+        }
+        
+        /// <summary>
+        /// 檢驗指定問卷是否已經作答過
+        /// </summary>
+        /// <param name="form">問卷實體</param>
+        /// <returns>操作結果</returns>
+        [HttpGet("{form}/isWrited")]
+        public async Task<JsonResult> IsWrited(
+            [Required][FromRoute]FormType form) {
+            return new ApiResult(){
+                Result = Database.Records.Any(x => x.FormId.Equals(form.Id) && x.UserId == User.Id)
+            };
+        }
+
+        /// <summary>
+        /// 取得已經作答過的問卷列表
+        /// </summary>
+        /// <param name="form">問卷實體</param>
+        /// <returns>操作結果</returns>
+        [HttpGet("list/isWrited")]
+        public async Task<JsonResult> IsWritedList() {
+            var FormIds = Database.Records.Where(x => x.UserId == User.Id).Select(x => x.FormId).Distinct();
+            
+            return new ApiResult() {
+                Result = FormIds
             };
         }
 

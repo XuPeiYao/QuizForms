@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace QuizForms.Quiz.Models {
         /// <summary>
         /// 擁有使用者唯一識別號
         /// </summary>
+        [JsonIgnore]
         string OwnerId { get; set; }
 
         /// <summary>

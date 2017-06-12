@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +22,7 @@ namespace QuizForms.Quiz.Models {
         /// <summary>
         /// 所屬問卷唯一識別號
         /// </summary>
+        [JsonIgnore]
         IdType FormId { get; set; }
 
         /// <summary>
