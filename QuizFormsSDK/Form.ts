@@ -91,13 +91,23 @@
         }
 
         /**
+         * 取得指定問卷
+         * @param id 唯一識別號
+         */
+        public static async get(id: any): Promise<Form> {
+            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "form/" + id)).toJSON();
+
+            return loadFromJSON(Form, response.result);
+        }
+
+        /**
          * 取得問卷列表
          * @param filter 篩選方式
          */
         public static async getList(filter: ListFilters = ListFilters.All): Promise<Form[]> {
             var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "form/list", null, {
                 filter: ListFilters[filter]
-            })).toJSON();
+            })).toJSON().result;
 
             var result = [];
             for (var i = 0; i < response.length; i++) {
@@ -112,7 +122,7 @@
          * @param form 問卷
          */
         public static async getQuestions(form: Form): Promise<Question[]> {
-            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "question/list/" + form.id)).toJSON();
+            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "question/list/" + form.id)).toJSON().result;
 
             var result = [];
             for (var i = 0; i < response.length; i++) {
@@ -127,7 +137,7 @@
          * @param form 問卷
          */
         public static async isWrited(form: Form): Promise<boolean> {
-            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "form/" + form.id + "/isWrited")).toJSON();
+            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "form/" + form.id + "/isWrited")).toJSON().result;
 
             return response.result;
         }
@@ -149,7 +159,7 @@
             var client = createHttpClient();
             var response = (await client.postAsync(SystemVars.apiUrl + "form", null, postData)).toJSON();
 
-            return loadFromJSON(Form, response);
+            return loadFromJSON(Form, response.result);
         }
 
         /**
