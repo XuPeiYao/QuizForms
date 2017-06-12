@@ -48,7 +48,7 @@
     /**
      * 題目
      */
-    export class Question{
+    export class Question {
         /**
          * 唯一識別號
          */
@@ -119,5 +119,38 @@
             return result;
         }
 
+        /**
+         * 建立子問題至指定的問題下
+         * @param form 問卷
+         * @param parent 父問題
+         * @param type 類型
+         * @param text 文字
+         * @param order 顯示順序
+         */
+        public static async create(
+            form: Form,
+            parent: Question,
+            type: QuestionTypes,
+            text: string,
+            order: number = null) : Promise<Question> {
+            
+        }
+
+        /**
+         * 建立子問題至指定的問題下
+         * @param parent 父問題
+         * @param newInstance 新問題
+         */
+        public static async add(parent: Question, newInstance: Question): Promise<void> {
+            await parent.getChildren();
+            parent.children.push(await Question.create(parent.formId, parent, QuestionTypes[newInstance.type], newInstance.text, newInstance.order));
+        }
+
+        /**
+         * 刪除指定的問題
+         * @param question 問題
+         */
+        public static async remove(question: Question): Promise<void> {
+        }
     }
 }

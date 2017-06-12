@@ -71,7 +71,7 @@ namespace QuizForms.Quiz {
         [Authority(Minimum = UserTypes.Admin)]
         public async Task<JsonResult> Add(
             [Required][FromRoute]FormType form,
-            [FromRoute]QuestionType question,
+            [FromRoute]QuestionType parent,
             [FromForm]string text,
             [FromForm]int? order,
             [FromForm]QuestionTypes type = QuestionTypes.Text) {

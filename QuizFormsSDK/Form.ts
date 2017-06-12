@@ -163,6 +163,14 @@
         }
 
         /**
+         * 新增問卷
+         * @param form 問卷
+         */
+        public static async add(form: Form): Promise<void> {
+            await Form.create(form.name, form.rewriteable, form.order);
+        }
+
+        /**
          * 刪除問卷
          * @param form 問卷
          */
