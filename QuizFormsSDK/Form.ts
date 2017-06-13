@@ -198,5 +198,18 @@
                 name: form.name
             });
         }
+
+        /**
+         * 送出問卷
+         * @param form 問卷
+         * @param data 填寫資料
+         * @param code 機器人驗證
+         */
+        public static async submit(form: Form, data: any, code : string): Promise<void> {
+            await createHttpClient().postAsync(SystemVars.apiUrl + "record/" + form.id, null, {
+                formJsonString: JSON.stringify(data),
+                code: code
+            });
+        }
     }
 }
