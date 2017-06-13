@@ -26,10 +26,11 @@ namespace QuizForms.Quiz {
 
         public new LoginUser User {
             get {
-                if (HttpContext.Session.Keys.Contains(SessionKeys_UserId)) { return new LoginUser() {
-                    Id = HttpContext.Session.GetString(SessionKeys_UserId),
-                    Type = (UserTypes)Enum.Parse(typeof(UserTypes), HttpContext.Session.GetString(SessionKeys_Type))
-                };
+                if (HttpContext.Session.Keys.Contains(SessionKeys_UserId)) {
+                    return new LoginUser() {
+                        Id = HttpContext.Session.GetString(SessionKeys_UserId),
+                        Type = (UserTypes)Enum.Parse(typeof(UserTypes), HttpContext.Session.GetString(SessionKeys_Type))
+                    };
                 } else {
                     return null;
                 }
@@ -50,15 +51,10 @@ namespace QuizForms.Quiz {
             }
         }
 
-        public override UserTypes UserAuthority {
-            get {
-                if (User == null) return UserTypes.Null;
-                return User.Type;
-            }
-        }
+        public override UserTypes UserAuthority => User == null ? UserTypes.Null : User.Type;
 
         public QuizControllerBase(
-            QuizDbContext<IdType, FormType, QuestionType, RecordType> dbContext):base() {
+                QuizDbContext<IdType, FormType, QuestionType, RecordType> dbContext) : base() {
             this.Database = dbContext;
         }
 
