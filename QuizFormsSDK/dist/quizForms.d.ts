@@ -70,6 +70,16 @@ declare module QuizForms {
          */
         addQuestion(question: Question): Promise<void>;
         /**
+         * 送出問卷
+         * @param data 問卷結果
+         * @param code 機器人驗證
+         */
+        submit(data: string, code: string): Promise<void>;
+        /**
+         * 清除目前登入使用者針對本問卷填寫紀錄
+         */
+        clearSubmit(): Promise<void>;
+        /**
          * 取得指定問卷
          * @param id 唯一識別號
          */
@@ -118,6 +128,11 @@ declare module QuizForms {
          * @param code 機器人驗證
          */
         static submit(form: Form, data: any, code: string): Promise<void>;
+        /**
+         * 清除目前登入使用者針對本問卷填寫紀錄
+         * @param form 問卷
+         */
+        static clearSubmit(form: Form): Promise<void>;
     }
 }
 declare module QuizForms {

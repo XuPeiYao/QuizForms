@@ -153,6 +153,38 @@ var QuizForms;
             });
         };
         /**
+         * 送出問卷
+         * @param data 問卷結果
+         * @param code 機器人驗證
+         */
+        Form.prototype.submit = function (data, code) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, Form.submit(this, data, code)];
+                        case 1:
+                            _a.sent();
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        /**
+         * 清除目前登入使用者針對本問卷填寫紀錄
+         */
+        Form.prototype.clearSubmit = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, Form.clearSubmit(this)];
+                        case 1:
+                            _a.sent();
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        /**
          * 取得指定問卷
          * @param id 唯一識別號
          */
@@ -327,6 +359,22 @@ var QuizForms;
                                 formJsonString: JSON.stringify(data),
                                 code: code
                             })];
+                        case 1:
+                            _a.sent();
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        /**
+         * 清除目前登入使用者針對本問卷填寫紀錄
+         * @param form 問卷
+         */
+        Form.clearSubmit = function (form) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, QuizForms.createHttpClient().deleteAsync(QuizForms.SystemVars.apiUrl + "form/" + (form.id || form) + "/self")];
                         case 1:
                             _a.sent();
                             return [2 /*return*/];

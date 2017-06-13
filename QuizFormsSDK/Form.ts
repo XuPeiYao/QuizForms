@@ -97,7 +97,23 @@
         public async addQuestion(question: Question): Promise<void> {
             await Question.addToForm(this, question);
         }
-        
+
+        /**
+         * 送出問卷
+         * @param data 問卷結果
+         * @param code 機器人驗證
+         */
+        public async submit(data: string, code: string): Promise<void> {
+            await Form.submit(this, data, code);
+        }
+
+        /**
+         * 清除目前登入使用者針對本問卷填寫紀錄
+         */
+        public async clearSubmit(): Promise<void> {
+            await Form.clearSubmit(this);
+        }
+
         /**
          * 取得指定問卷
          * @param id 唯一識別號
@@ -210,6 +226,14 @@
                 formJsonString: JSON.stringify(data),
                 code: code
             });
+        }
+
+        /**
+         * 清除目前登入使用者針對本問卷填寫紀錄
+         * @param form 問卷
+         */
+        public static async clearSubmit(form: Form): Promise<void> {
+            await createHttpClient().deleteAsync(SystemVars.apiUrl + "form/" + (form.id || form) + "/self");
         }
     }
 }
