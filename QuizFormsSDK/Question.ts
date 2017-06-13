@@ -157,14 +157,26 @@
             return loadFromJSON(Question, response);
         }
 
+
         /**
          * 建立子問題至指定的問題下
          * @param parent 父問題
          * @param newInstance 新問題
          */
-        public static async add(parent: Question, newInstance: Question): Promise<void> {
+        public static async add(parent: Question, question: Question): Promise<void> {
             await parent.getChildren();
-            parent.children.push(await Question.create(parent.formId, parent, QuestionTypes[newInstance.type], newInstance.text, newInstance.order));
+            parent.children.push(await Question.create(parent.formId, parent, QuestionTypes[question.type], question.text, question.order));
+        }
+
+        /**
+         * 加入新問題至問卷
+         * @param form 問卷 
+         * @param question 問題
+         */
+        public static async addToForm(form:Form,question: Question): Promise<void> {
+            await form.getQuestions();
+            form.questions.push(await Question.create((form.id || form), null, QuestionTypes[question.type], question.text, question.order));
+
         }
 
         /**

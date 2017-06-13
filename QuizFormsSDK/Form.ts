@@ -91,6 +91,14 @@
         }
 
         /**
+         * 新增問題
+         * @param question 問題
+         */
+        public async addQuestion(question: Question): Promise<void> {
+            await Question.addToForm(this, question);
+        }
+        
+        /**
          * 取得指定問卷
          * @param id 唯一識別號
          */
