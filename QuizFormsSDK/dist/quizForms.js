@@ -185,6 +185,23 @@ var QuizForms;
             });
         };
         /**
+         * 取得下載網址
+         * @param type 檔案類型
+         * @param start 起始時間
+         * @param end 結束時間
+         */
+        Form.prototype.getDownloadUrl = function (type, start, end) {
+            if (end === void 0) { end = null; }
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, Form.getDownloadUrl(this, type, start, end)];
+                        case 1: return [2 /*return*/, _a.sent()];
+                    }
+                });
+            });
+        };
+        /**
          * 取得指定問卷
          * @param id 唯一識別號
          */
@@ -379,6 +396,26 @@ var QuizForms;
                             _a.sent();
                             return [2 /*return*/];
                     }
+                });
+            });
+        };
+        /**
+         * 取得下載網址
+         * @param form 問卷
+         * @param type 檔案類型
+         * @param start 起始時間
+         * @param end 結束時間
+         */
+        Form.getDownloadUrl = function (form, type, start, end) {
+            if (end === void 0) { end = null; }
+            return __awaiter(this, void 0, void 0, function () {
+                var result;
+                return __generator(this, function (_a) {
+                    result = QuizForms.SystemVars.apiUrl + "record/" + (form.id || form) + "?type=" + type + "&start=" + start.getTime();
+                    if (end) {
+                        result += "&end=" + end.getTime();
+                    }
+                    return [2 /*return*/, result];
                 });
             });
         };

@@ -80,6 +80,13 @@ declare module QuizForms {
          */
         clearSubmit(): Promise<void>;
         /**
+         * 取得下載網址
+         * @param type 檔案類型
+         * @param start 起始時間
+         * @param end 結束時間
+         */
+        getDownloadUrl(type: "csv" | "excel", start: Date, end?: Date): Promise<string>;
+        /**
          * 取得指定問卷
          * @param id 唯一識別號
          */
@@ -133,6 +140,14 @@ declare module QuizForms {
          * @param form 問卷
          */
         static clearSubmit(form: Form): Promise<void>;
+        /**
+         * 取得下載網址
+         * @param form 問卷
+         * @param type 檔案類型
+         * @param start 起始時間
+         * @param end 結束時間
+         */
+        static getDownloadUrl(form: Form, type: "csv" | "excel", start: Date, end?: Date): Promise<string>;
     }
 }
 declare module QuizForms {

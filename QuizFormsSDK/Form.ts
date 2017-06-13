@@ -115,6 +115,16 @@
         }
 
         /**
+         * 取得下載網址
+         * @param type 檔案類型
+         * @param start 起始時間
+         * @param end 結束時間
+         */
+        public async getDownloadUrl(type: "csv" | "excel", start: Date, end: Date = null): Promise<string> {
+            return await Form.getDownloadUrl(this, type, start, end);
+        }
+
+        /**
          * 取得指定問卷
          * @param id 唯一識別號
          */
@@ -234,6 +244,21 @@
          */
         public static async clearSubmit(form: Form): Promise<void> {
             await createHttpClient().deleteAsync(SystemVars.apiUrl + "form/" + (form.id || form) + "/self");
+        }
+
+        /**
+         * 取得下載網址
+         * @param form 問卷
+         * @param type 檔案類型
+         * @param start 起始時間
+         * @param end 結束時間
+         */
+        public static async getDownloadUrl(form: Form, type: "csv" | "excel", start: Date, end: Date = null): Promise<string> {
+            var result = SystemVars.apiUrl + "record/" + (form.id || form) + "?type=" + type + "&start=" + start.getTime();
+            if (end) {
+                result += "&end=" + end.getTime();
+            }
+            return result;
         }
     }
 }
