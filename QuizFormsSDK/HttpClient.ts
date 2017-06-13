@@ -94,9 +94,17 @@
         public resultXML: Document;
         public result: any;
 
+        public static defaultJSONHandler: (json: any) => void = null;
+        public toJSON(handler?: (json:any)=>void): any {
+            var result = JSON.parse(this.resultText);
 
-        public toJSON(): any {
-            return JSON.parse(this.resultText);
+            if (handler) {
+                handler(result);
+            } else if (HttpResponse.defaultJSONHandler) {
+                HttpResponse.defaultJSONHandler(result);
+            }
+
+            return result;
         }
     }
 }

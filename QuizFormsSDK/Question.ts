@@ -176,7 +176,6 @@
         public static async addToForm(form:Form,question: Question): Promise<void> {
             await form.getQuestions();
             form.questions.push(await Question.create((form.id || form), null, QuestionTypes[question.type], question.text, question.order));
-
         }
 
         /**

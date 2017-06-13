@@ -9,9 +9,9 @@
         get apiUrl(): string {
             return location.origin + "/api/";
         },
-        onException: (e) => { },
+        onException: (e: string) => { },
         disableException: false
-    };
+    };    
 
     export function createHttpClient(): HttpClient {
         var client = new HttpClient();
@@ -27,4 +27,10 @@
         }
         return result;
     }
+}
+QuizForms.HttpResponse.defaultJSONHandler = (json: any) => {
+    if (json.success) return;
+    if (QuizForms.SystemVars.disableException) return;
+    QuizForms.SystemVars.onException(json.result);
+    throw json.result;
 }

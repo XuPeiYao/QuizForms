@@ -65,6 +65,11 @@ declare module QuizForms {
          */
         update(): Promise<void>;
         /**
+         * 新增問題
+         * @param question 問題
+         */
+        addQuestion(question: Question): Promise<void>;
+        /**
          * 取得指定問卷
          * @param id 唯一識別號
          */
@@ -92,6 +97,11 @@ declare module QuizForms {
          */
         static create(name: string, rewriteable?: boolean, order?: number): Promise<Form>;
         /**
+         * 新增問卷
+         * @param form 問卷
+         */
+        static add(form: Form): Promise<void>;
+        /**
          * 刪除問卷
          * @param form 問卷
          */
@@ -101,6 +111,13 @@ declare module QuizForms {
          * @param form 問卷
          */
         static update(form: Form): Promise<void>;
+        /**
+         * 送出問卷
+         * @param form 問卷
+         * @param data 填寫資料
+         * @param code 機器人驗證
+         */
+        static submit(form: Form, data: any, code: string): Promise<void>;
     }
 }
 declare module QuizForms {
@@ -124,7 +141,8 @@ declare module QuizForms {
         resultText: string;
         resultXML: Document;
         result: any;
-        toJSON(): any;
+        static defaultJSONHandler: (json: any) => void;
+        toJSON(handler?: (json: any) => void): any;
     }
 }
 declare module QuizForms {
@@ -218,17 +236,48 @@ declare module QuizForms {
          */
         getChildren(): Promise<Question[]>;
         /**
+         * 新增子題目
+         * @param question 子題目
+         */
+        addChildren(question: Question): Promise<void>;
+        /**
          * 取得題目的子題目
          * @param question 題目
          */
         static getChildren(question: Question): Promise<Question[]>;
+        /**
+         * 建立子問題至指定的問題下
+         * @param form 問卷
+         * @param parent 父問題
+         * @param type 類型
+         * @param text 文字
+         * @param order 顯示順序
+         */
+        static create(form: Form, parent: Question, type: QuestionTypes, text: string, order?: number): Promise<Question>;
+        /**
+         * 建立子問題至指定的問題下
+         * @param parent 父問題
+         * @param newInstance 新問題
+         */
+        static add(parent: Question, question: Question): Promise<void>;
+        /**
+         * 加入新問題至問卷
+         * @param form 問卷
+         * @param question 問題
+         */
+        static addToForm(form: Form, question: Question): Promise<void>;
+        /**
+         * 刪除指定的問題
+         * @param question 問題
+         */
+        static remove(question: Question): Promise<void>;
     }
 }
 declare module QuizForms {
     var SystemVars: {
         readonly origin: string;
         readonly apiUrl: string;
-        onException: (e: any) => void;
+        onException: (e: string) => void;
         disableException: boolean;
     };
     function createHttpClient(): HttpClient;
@@ -272,6 +321,14 @@ declare module QuizForms {
          * @param isAdmin 是否取得管理權限
          */
         static login(id: string, password: string, isAdmin?: boolean): Promise<User>;
+        /**
+         * 取得目前登入的使用者資訊
+         */
+        static getCurrentUser(): Promise<User>;
+        /**
+         * 取得目前是否登入中
+         */
+        static isLogin(): Promise<boolean>;
         /**
          * 登出目前使用身分
          */
