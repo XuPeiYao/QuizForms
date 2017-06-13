@@ -30,9 +30,7 @@
          * 唯一識別號
          */
         public id: UserTypes;
-
-
-
+                
         /**
          * 登入並取得使用者資訊
          * @param id 唯一識別號
@@ -47,7 +45,28 @@
                 password: password,
                 isAdmin: isAdmin
             });
-            return <User>loadFromJSON(User,response.toJSON());
+            return <User>loadFromJSON(User,response.toJSON().result);
+        }
+
+        /**
+         * 取得目前登入的使用者資訊
+         */
+        public static async getCurrentUser(): Promise<User> {
+            var client = createHttpClient();
+
+            var response = await client.getAsync(SystemVars.apiUrl + "user/status");
+
+            var result = response.toJSON().result;
+            if (result == null) return null;
+
+            return <User>loadFromJSON(User, result);
+        }
+
+        /**
+         * 取得目前是否登入中
+         */
+        public static async isLogin(): Promise<boolean> {
+            return (await User.getCurrentUser()) != null;
         }
 
         /**
