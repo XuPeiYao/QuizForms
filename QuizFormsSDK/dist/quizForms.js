@@ -186,7 +186,7 @@ var QuizForms;
                             response = (_a.sent()).toJSON().result;
                             result = [];
                             for (i = 0; i < response.length; i++) {
-                                result.push(Form, response[i]);
+                                result.push(QuizForms.loadFromJSON(Form, response[i]));
                             }
                             return [2 /*return*/, result];
                     }
@@ -207,7 +207,7 @@ var QuizForms;
                             response = (_a.sent()).toJSON().result;
                             result = [];
                             for (i = 0; i < response.length; i++) {
-                                result.push(QuizForms.Question, response[i]);
+                                result.push(QuizForms.loadFromJSON(QuizForms.Question, response[i]));
                             }
                             return [2 /*return*/, result];
                     }
@@ -225,7 +225,7 @@ var QuizForms;
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, QuizForms.createHttpClient().getAsync(QuizForms.SystemVars.apiUrl + "form/" + form.id + "/isWrited")];
                         case 1:
-                            response = (_a.sent()).toJSON().result;
+                            response = (_a.sent()).toJSON();
                             return [2 /*return*/, response.result];
                     }
                 });
@@ -476,6 +476,7 @@ var QuizForms;
         }
         HttpResponse.prototype.toJSON = function (handler) {
             var result = JSON.parse(this.resultText);
+            console.log(result);
             if (handler) {
                 handler(result);
             }
@@ -593,7 +594,7 @@ var QuizForms;
                             response = (_a.sent()).toJSON().result;
                             result = [];
                             for (i = 0; i < response.length; i++) {
-                                result.push(Question, response[i]);
+                                result.push(QuizForms.loadFromJSON(Question, response[i]));
                             }
                             return [2 /*return*/, result];
                     }

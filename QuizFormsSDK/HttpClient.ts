@@ -97,7 +97,7 @@
         public static defaultJSONHandler: (json: any) => void = null;
         public toJSON(handler?: (json:any)=>void): any {
             var result = JSON.parse(this.resultText);
-
+            console.log(result);
             if (handler) {
                 handler(result);
             } else if (HttpResponse.defaultJSONHandler) {

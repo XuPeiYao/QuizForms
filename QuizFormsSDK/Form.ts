@@ -119,7 +119,7 @@
 
             var result = [];
             for (var i = 0; i < response.length; i++) {
-                result.push(Form, response[i]);
+                result.push(loadFromJSON(Form, response[i]));
             }
 
             return result;
@@ -134,7 +134,7 @@
 
             var result = [];
             for (var i = 0; i < response.length; i++) {
-                result.push(Question, response[i]);
+                result.push(loadFromJSON(Question, response[i]));
             }
 
             return result;
@@ -145,7 +145,7 @@
          * @param form 問卷
          */
         public static async isWrited(form: Form): Promise<boolean> {
-            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "form/" + form.id + "/isWrited")).toJSON().result;
+            var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "form/" + form.id + "/isWrited")).toJSON();
 
             return response.result;
         }

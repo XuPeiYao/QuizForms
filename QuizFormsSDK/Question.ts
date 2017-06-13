@@ -121,7 +121,7 @@
 
             var result = [];
             for (var i = 0; i < response.length; i++) {
-                result.push(Question, response[i]);
+                result.push(loadFromJSON(Question, response[i]));
             }
 
             return result;
