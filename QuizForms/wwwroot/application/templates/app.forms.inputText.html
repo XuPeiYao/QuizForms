@@ -1,0 +1,8 @@
+<div>
+    <p class="question-text">{{text}}: <span class="required" [hidden]="!question.required  || result[question.id]" [attr.data-hidden]="!question.required  || result[question.id]">未填寫</span></p>
+    <div class="question-inputText mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="text" [(ngModel)]="result[question.id]" [name]="name">
+        <label class="mdl-textfield__label">請輸入文字...</label>
+    </div>
+    <!--<button (click)="test()">TEST</button>-->
+</div>

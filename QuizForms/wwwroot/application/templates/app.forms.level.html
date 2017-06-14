@@ -1,0 +1,28 @@
+<div>
+    <p class="question-text">{{question.text}} <span class="required" [hidden]="!question.required  || result[question.id]" [attr.data-hidden]="!question.required  || result[question.id]">未填寫</span></p>
+        <div>
+            非常不同意
+            <span>
+                <input type="radio" [(ngModel)]="result[question.id]" name="q_{{question.id}}" id="q_{{question.id}}_1" value="1" class="css-checkbox"/>
+                <label [attr.for]="'q_' + question.id + '_1'" class="css-radio-label"></label>
+            </span>
+            <span>
+                <input type="radio" [(ngModel)]="result[question.id]" name="q_{{question.id}}" id="q_{{question.id}}_2" value="2" class="css-checkbox"/>
+                <label [attr.for]="'q_' + question.id + '_2'" class="css-radio-label"></label>
+            </span>
+            <span>
+                <input type="radio" [(ngModel)]="result[question.id]" name="q_{{question.id}}" id="q_{{question.id}}_3" value="3" class="css-checkbox"/>
+                <label [attr.for]="'q_' + question.id + '_3'" class="css-radio-label"></label>
+            </span>
+            <span>
+                <input type="radio" [(ngModel)]="result[question.id]" name="q_{{question.id}}" id="q_{{question.id}}_4" value="4" class="css-checkbox"/>
+                <label [attr.for]="'q_' + question.id + '_4'" class="css-radio-label"></label>
+            </span>
+            <span>
+                <input type="radio" [(ngModel)]="result[question.id]" name="q_{{question.id}}" id="q_{{question.id}}_5" value="5" class="css-checkbox"/>
+                <label [attr.for]="'q_' + question.id + '_5'" class="css-radio-label"></label>
+            </span>
+            非常同意
+        </div>
+    <!--<button (click)="test()">TEST</button>-->
+</div>

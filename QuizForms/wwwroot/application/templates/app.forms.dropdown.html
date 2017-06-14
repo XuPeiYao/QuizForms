@@ -1,0 +1,11 @@
+<div>
+    <p class="question-text">
+        {{text.split('{options}')[0]}}
+        <select style="width:80px" [(ngModel)]="result[question.id]">
+            <option *ngFor="let t of children" value="{{t.id}}">{{t.text}}</option>
+        </select>
+        {{text.split('{options}')[1]}}
+        <span class="required" [hidden]="!question.required  || result[question.id]" [attr.data-hidden]="!question.required  || result[question.id]">未填寫</span>
+    </p>
+    <!--<button (click)="test()">TEST</button>-->
+</div>
