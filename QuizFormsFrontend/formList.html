@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="組織內部問卷系統">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>問卷列表 - 組織內部問卷系統</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-blue.min.css" />
+
+    <script src="assets/libraries/fixIEConsole.js"></script>    
+    <script src="assets/libraries/fixOrigin.js"></script>
+    <script src="assets/libraries/quizSDK/quizForms.js"></script>
+    <!-- SweetAlert -->
+    <script src="assets/libraries/sweetalert/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="assets/libraries/sweetalert/sweetalert.css">
+    <link rel="stylesheet" href="assets/libraries/sweetalert/themes/google/google.css">
+    
+
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+    <script src="assets/libraries/classList.min.js"></script>
+    <script src="assets/libraries/formdata.js"></script>
+
+    <script src="assets/libraries/dateFormat.js"></script>
+    <script src="assets/libraries/download.js"></script>
+    <!-- Configure SystemJS -->
+    <script src="assets/scripts/systemjs.config.js"></script>
+    <script>
+        System.import('app').then(function () {
+        }).catch(function (err) {
+            console.error(err);
+        });
+        
+        studentQuestion.User.getStatus().then(function(x){
+            if(x==null)location.href="login.html" + location.search;
+        })
+    </script>
+</head>
+<body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <app-root>
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+            <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+            </div>
+            <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+                <h3>國立高雄第一科技大學</h3>
+            </div>
+            <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+            </div>
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+                <a href="#overview" class="mdl-layout__tab is-active">新生問卷系統</a> 
+            </div>
+        </header>
+        <app-components-logoutButton></app-components-logoutButton>
+        <main class="mdl-layout__content">
+            <div class="mdl-layout__tab-panel is-active" id="overview">
+                <app-components-formlist><h3><div class="mdl-spinner mdl-js-spinner is-active"></div>載入中，請稍後</h3></app-components-formlist>
+            </div>
+        </main>
+        <footer class="demo-footer mdl-mini-footer">
+          <div class="mdl-mini-footer--left-section">
+            <ul class="mdl-mini-footer--link-list">
+              <li>Copyright © NKFUST. All Rights Reserved. 2017~</li>
+              <li><a href="http://www.nkfust.edu.tw/">回首頁</a></li>
+            </ul>
+          </div>
+        </footer>
+        </div>
+    </app-root>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.js"></script>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-68639841-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>

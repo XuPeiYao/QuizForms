@@ -1,0 +1,25 @@
+<div class="demo-crumbs mdl-color-text--grey-500">
+新生問卷系統 &gt; {{data?.name}}
+</div>
+<h3>新生問卷 - {{data?.name}}</h3>
+<h3 [hidden]="data?.questions" [attr.data-hidden]="data?.questions"><div class="mdl-spinner mdl-js-spinner is-active"></div>載入中，請稍後</h3>
+<div class="question" *ngFor="let t of data?.questions;let i = index">
+    <hr *ngIf="i>0&&t.type=='Title'" />
+    <h4 *ngIf="t.type=='Title'">{{t.text}}</h4>
+    <p class="question-text" *ngIf="t.type=='Text'" [innerHTML]="t.text"></p>
+    <app-forms-inputtext *ngIf="t.type=='InputText'"  [(result)]="result" [question]="t"></app-forms-inputtext>
+    <app-forms-inputnumber *ngIf="t.type=='InputNumber'"  [(result)]="result" [question]="t"></app-forms-inputnumber>
+    <app-forms-level *ngIf="t.type=='Level'"  [(result)]="result" [question]="t"></app-forms-level>
+    <app-forms-radiogroup *ngIf="t.type=='RadioGroup'" [(result)]="result"  [question]="t"></app-forms-radiogroup>
+    <app-forms-checkboxgroup *ngIf="t.type=='CheckboxGroup'" [(result)]="result" [question]="t"></app-forms-checkboxgroup>
+    <app-forms-dropdown *ngIf="t.type=='Dropdown'" [(result)]="result" [question]="t"></app-forms-dropdown>
+</div>
+<hr/>
+<div style="text-align:center"  [hidden]="!data?.questions" [attr.data-hidden]="!data?.questions">
+    <div id="g-recaptcha"></div>
+    <p>
+        <button (click)="sumbitDialog()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+            送出問卷
+        </button>
+    </p>
+</div>

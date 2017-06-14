@@ -1,0 +1,13 @@
+<div>
+    <p class="question-text">{{text}} <span class="required" [hidden]="!question.required  || result[question.id]"  [attr.data-hidden]="!question.required  || result[question.id]">未填寫</span></p>
+    <div class="mdl-grid">
+        <div *ngFor="let t of question.children" class="mdl-cell mdl-cell--12-col">
+            <hr *ngIf="i>0&&t.type=='Title'" />
+            <h4 *ngIf="t.type=='Title'">{{t.text}}</h4>
+            <p class="question-text" *ngIf="t.type=='Text'" [innerHTML]="t.text"></p>
+            <!--YO!-->
+            <app-forms-radio *ngIf="t.type=='Radio'" [(result)]="result" [name]="name" [question]="t"></app-forms-radio>
+        </div>
+    </div>
+    <!--<button (click)="test()">TEST</button>-->
+</div>

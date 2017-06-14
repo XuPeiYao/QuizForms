@@ -1,0 +1,17 @@
+<div>
+    <input type="checkbox"  [(ngModel)]="result[question.id]" value="{{question.id}}" id="{{id}}" class="css-checkbox"/>
+    <label [attr.for]="id" class="css-checkbox-label">{{text}}</label>
+    <div id="q_{{id}}_children" [hidden]="!result[question.id]" [attr.data-hidden]="!result[question.id]">
+        <div *ngFor="let t of children" style="margin-left: 20px;">
+            <hr *ngIf="i>0&&t.type=='Title'" />
+            <h4 *ngIf="t.type=='Title'">{{t.text}}</h4>
+            <p class="question-text" *ngIf="t.type=='Text'" [innerHTML]="t.text"></p>
+            <!--YO-->
+            <app-forms-radio *ngIf="t.type=='Radio'" [(result)]="result" [name]="name" [question]="t"></app-forms-radio>
+            <app-forms-inputtext *ngIf="t.type=='InputText'" [(result)]="result" [name]="name" [question]="t"></app-forms-inputtext>
+            <app-forms-inputnumber *ngIf="t.type=='InputNumber'" [(result)]="result" [name]="name" [question]="t"></app-forms-inputnumber>
+            <app-forms-level *ngIf="t.type=='Level'" [(result)]="result" [name]="name" [question]="t"></app-forms-level>
+            <app-forms-checkbox *ngIf="t.type=='Checkbox'" [(result)]="result" [name]="name" [question]="t"></app-forms-checkbox>
+        </div>
+    </div>
+</div>

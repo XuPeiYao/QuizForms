@@ -1,0 +1,58 @@
+<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+    <div class="mdl-card mdl-cell mdl-cell--12-col">
+        <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+            <h4 class="mdl-cell mdl-cell--12-col">問卷列表</h4>
+            <summary [hidden]="isAdmin" [attr.data-hidden]="isAdmin">請選擇與您身分相應的問卷作答</summary>     
+            <summary [hidden]="!isAdmin" [attr.data-hidden]="!isAdmin">請選擇欲下載之問卷結果與格式</summary>
+            <div class="mdl-grid">
+                <div [hidden]="forms" [attr.data-hidden]="forms"><h3><div class="mdl-spinner mdl-js-spinner is-active"></div>載入中，請稍後</h3></div>
+                <div *ngFor="let form of forms" class="mdl-cell mdl-cell--6-col" [hidden]="isAdmin" [attr.data-hidden]="isAdmin">
+                    <button style="min-width:120px" (click)="gotoForm(form)" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                        <i class="material-icons mdl-list__item-icon">&#xE24D;</i>
+                        {{form.name}}
+                    </button>
+                </div>
+                <div *ngFor="let form of forms" class="mdl-cell mdl-cell--12-col" [hidden]="!isAdmin" [attr.data-hidden]="!isAdmin">
+                    <i class="material-icons mdl-list__item-icon">&#xE24D;</i>
+                    {{form.name}}
+
+                    <button id="{{form.id}}_excel" (click)="downloadFormExcel(form)"  class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                        下載(Excel格式)
+                    </button>
+                    <div class="mdl-tooltip" attr.data-mdl-for="{{form.id}}_excel" >
+                        輸出Microsoft Office Excel工作簿，將所有題目以一個題目一張工作表的方式輸出
+                    </div>
+
+                    <button id="{{form.id}}_csv" (click)="downloadFormCSV(form)" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                        下載(CSV格式)
+                    </button>
+                    <div class="mdl-tooltip" attr.data-mdl-for="{{form.id}}_csv" >
+                        輸出逗號分隔檔，將所有題目之選項、輸入框等結果並排輸出
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+</section>
+<dialog id="dialog" class="mdl-dialog" [attr.data-hidden]="isIE">
+  <h3 class="mdl-dialog__title">時間範圍設定</h3>
+  <div class="mdl-dialog__content">
+    <summary>請設定您要下載的問卷結果時間範圍，請至少設定起始時間，假設未設定結束時間則結束時間則為現在，<b>時間填寫必須要填寫至分鐘</b></summary>
+    <div class="mdl-textfield mdl-textfield--floating-label is-dirty">
+        <input class="mdl-textfield__input" id="start" type="datetime-local" [(ngModel)]="startDate">
+        <label class="mdl-textfield__label" for="start">起始時間</label>
+    </div>
+    <div class="mdl-textfield mdl-textfield--floating-label is-dirty">
+        <input class="mdl-textfield__input" type="datetime-local" [(ngModel)]="endDate">
+        <label class="mdl-textfield__label">結束時間</label>
+    </div>
+    <summary><br/>
+         假設您欲設定時間為正午12時，應設定為下午12:00；如為凌晨0時，則應設為上午12:00
+    </summary>
+  </div>
+  <div class="mdl-dialog__actions">
+   <button type="button" (click)="download()" class="mdl-button">確定</button>
+    <button type="button" (click)="close()" class="mdl-button">取消</button>
+    
+  </div>
+</dialog>
