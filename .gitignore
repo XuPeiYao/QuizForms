@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 QuizForms/appsettings.json
+node_modules/
