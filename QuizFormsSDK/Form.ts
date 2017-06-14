@@ -160,7 +160,7 @@
 
             var result = [];
             for (var i = 0; i < response.length; i++) {
-                result.push(loadFromJSON(Question, response[i]));
+                result.push(Question.loadFromJSON(response[i]));
             }
 
             return result;
@@ -243,7 +243,7 @@
          * @param form 問卷
          */
         public static async clearSubmit(form: Form): Promise<void> {
-            await createHttpClient().deleteAsync(SystemVars.apiUrl + "form/" + (form.id || form) + "/self");
+            await createHttpClient().deleteAsync(SystemVars.apiUrl + "record/" + (form.id || form) + "/self");
         }
 
         /**
@@ -254,7 +254,7 @@
          * @param end 結束時間
          */
         public static async getDownloadUrl(form: Form, type: "csv" | "excel", start: Date, end: Date = null): Promise<string> {
-            var result = SystemVars.apiUrl + "record/" + (form.id || form) + "?type=" + type + "&start=" + start.getTime();
+            var result = SystemVars.apiUrl + "record/download/" + (form.id || form) + "?type=" + type + "&start=" + start.getTime();
             if (end) {
                 result += "&end=" + end.getTime();
             }

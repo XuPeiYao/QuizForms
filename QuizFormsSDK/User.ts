@@ -29,8 +29,15 @@
         /**
          * 唯一識別號
          */
-        public id: UserTypes;
-                
+        public id: string;
+
+        /**
+         * 是否為系統管理員
+         */
+        public get isAdmin(): boolean{
+            return this.type == UserTypes.Admin || this.type == UserTypes.TopAdmin;
+        }
+
         /**
          * 登入並取得使用者資訊
          * @param id 唯一識別號
@@ -45,7 +52,15 @@
                 password: password,
                 isAdmin: isAdmin
             });
-            return <User>loadFromJSON(User,response.toJSON().result);
+            var result = User.loadFromJSON(response.toJSON().result);
+            return result;
+        }
+
+
+        public static loadFromJSON(json: any): User {
+            var result = loadFromJSON(User, json);
+            result.type = UserTypes[result.type];
+            return result;
         }
 
         /**
@@ -59,9 +74,10 @@
             var result = response.toJSON().result;
             if (result == null) return null;
 
-            return <User>loadFromJSON(User, result);
+            result = User.loadFromJSON(result);
+            return result;
         }
-
+        
         /**
          * 取得目前是否登入中
          */

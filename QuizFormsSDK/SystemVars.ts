@@ -9,7 +9,7 @@
         get apiUrl(): string {
             return location.origin + "/api/";
         },
-        onException: (e: string) => { },
+        onException: (e: any) => { },
         disableException: false
     };    
 
@@ -31,6 +31,12 @@
 QuizForms.HttpResponse.defaultJSONHandler = (json: any) => {
     if (json.success) return;
     if (QuizForms.SystemVars.disableException) return;
-    QuizForms.SystemVars.onException(json.result);
-    throw json.result;
+
+
+    var exception = {
+        name: "錯誤",
+        message: json.result
+    }
+    QuizForms.SystemVars.onException(exception);
+    throw exception;
 }

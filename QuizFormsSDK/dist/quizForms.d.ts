@@ -244,7 +244,7 @@ declare module QuizForms {
         /**
          * 類型
          */
-        type: string;
+        type: QuestionTypes;
         /**
          * 是否為必填
          */
@@ -261,6 +261,10 @@ declare module QuizForms {
          * 子題目
          */
         children: Question[];
+        /**
+         * 類型字串表示
+         */
+        readonly typeString: string;
         /**
          * 取得子題目
          */
@@ -301,13 +305,14 @@ declare module QuizForms {
          * @param question 問題
          */
         static remove(question: Question): Promise<void>;
+        static loadFromJSON(json: any): Question;
     }
 }
 declare module QuizForms {
     var SystemVars: {
         readonly origin: string;
         readonly apiUrl: string;
-        onException: (e: string) => void;
+        onException: (e: any) => void;
         disableException: boolean;
     };
     function createHttpClient(): HttpClient;
@@ -343,7 +348,11 @@ declare module QuizForms {
         /**
          * 唯一識別號
          */
-        id: UserTypes;
+        id: string;
+        /**
+         * 是否為系統管理員
+         */
+        readonly isAdmin: boolean;
         /**
          * 登入並取得使用者資訊
          * @param id 唯一識別號
@@ -351,6 +360,7 @@ declare module QuizForms {
          * @param isAdmin 是否取得管理權限
          */
         static login(id: string, password: string, isAdmin?: boolean): Promise<User>;
+        static loadFromJSON(json: any): User;
         /**
          * 取得目前登入的使用者資訊
          */

@@ -256,7 +256,7 @@ var QuizForms;
                             response = (_a.sent()).toJSON().result;
                             result = [];
                             for (i = 0; i < response.length; i++) {
-                                result.push(QuizForms.loadFromJSON(QuizForms.Question, response[i]));
+                                result.push(QuizForms.Question.loadFromJSON(response[i]));
                             }
                             return [2 /*return*/, result];
                     }
@@ -391,7 +391,7 @@ var QuizForms;
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, QuizForms.createHttpClient().deleteAsync(QuizForms.SystemVars.apiUrl + "form/" + (form.id || form) + "/self")];
+                        case 0: return [4 /*yield*/, QuizForms.createHttpClient().deleteAsync(QuizForms.SystemVars.apiUrl + "record/" + (form.id || form) + "/self")];
                         case 1:
                             _a.sent();
                             return [2 /*return*/];
@@ -411,7 +411,7 @@ var QuizForms;
             return __awaiter(this, void 0, void 0, function () {
                 var result;
                 return __generator(this, function (_a) {
-                    result = QuizForms.SystemVars.apiUrl + "record/" + (form.id || form) + "?type=" + type + "&start=" + start.getTime();
+                    result = QuizForms.SystemVars.apiUrl + "record/download/" + (form.id || form) + "?type=" + type + "&start=" + start.getTime();
                     if (end) {
                         result += "&end=" + end.getTime();
                     }
@@ -629,6 +629,16 @@ var QuizForms;
     var Question = (function () {
         function Question() {
         }
+        Object.defineProperty(Question.prototype, "typeString", {
+            /**
+             * 類型字串表示
+             */
+            get: function () {
+                return QuestionTypes[this.type];
+            },
+            enumerable: true,
+            configurable: true
+        });
         /**
          * 取得子題目
          */
@@ -679,7 +689,7 @@ var QuizForms;
                             response = (_a.sent()).toJSON().result;
                             result = [];
                             for (i = 0; i < response.length; i++) {
-                                result.push(QuizForms.loadFromJSON(Question, response[i]));
+                                result.push(Question.loadFromJSON(response[i]));
                             }
                             return [2 /*return*/, result];
                     }
@@ -718,7 +728,7 @@ var QuizForms;
                             _a.label = 4;
                         case 4:
                             response = response.result;
-                            return [2 /*return*/, QuizForms.loadFromJSON(Question, response)];
+                            return [2 /*return*/, Question.loadFromJSON(response.result)];
                     }
                 });
             });
@@ -737,7 +747,7 @@ var QuizForms;
                         case 1:
                             _d.sent();
                             _b = (_a = parent.children).push;
-                            return [4 /*yield*/, Question.create(parent.formId, parent, QuestionTypes[question.type], question.text, question.order)];
+                            return [4 /*yield*/, Question.create(parent.formId, parent, question.type, question.text, question.order)];
                         case 2:
                             _b.apply(_a, [_d.sent()]);
                             return [2 /*return*/];
@@ -759,7 +769,7 @@ var QuizForms;
                         case 1:
                             _d.sent();
                             _b = (_a = form.questions).push;
-                            return [4 /*yield*/, Question.create((form.id || form), null, QuestionTypes[question.type], question.text, question.order)];
+                            return [4 /*yield*/, Question.create((form.id || form), null, question.type, question.text, question.order)];
                         case 2:
                             _b.apply(_a, [_d.sent()]);
                             return [2 /*return*/];
@@ -782,6 +792,11 @@ var QuizForms;
                     }
                 });
             });
+        };
+        Question.loadFromJSON = function (json) {
+            var result = QuizForms.loadFromJSON(Question, json);
+            result.type = QuestionTypes[result.type];
+            return result;
         };
         return Question;
     }());
@@ -822,8 +837,12 @@ QuizForms.HttpResponse.defaultJSONHandler = function (json) {
         return;
     if (QuizForms.SystemVars.disableException)
         return;
-    QuizForms.SystemVars.onException(json.result);
-    throw json.result;
+    var exception = {
+        name: "錯誤",
+        message: json.result
+    };
+    QuizForms.SystemVars.onException(exception);
+    throw exception;
 };
 var QuizForms;
 (function (QuizForms) {
@@ -852,6 +871,16 @@ var QuizForms;
     var User = (function () {
         function User() {
         }
+        Object.defineProperty(User.prototype, "isAdmin", {
+            /**
+             * 是否為系統管理員
+             */
+            get: function () {
+                return this.type == UserTypes.Admin || this.type == UserTypes.TopAdmin;
+            },
+            enumerable: true,
+            configurable: true
+        });
         /**
          * 登入並取得使用者資訊
          * @param id 唯一識別號
@@ -861,7 +890,7 @@ var QuizForms;
         User.login = function (id, password, isAdmin) {
             if (isAdmin === void 0) { isAdmin = false; }
             return __awaiter(this, void 0, void 0, function () {
-                var client, response;
+                var client, response, result;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -873,10 +902,16 @@ var QuizForms;
                                 })];
                         case 1:
                             response = _a.sent();
-                            return [2 /*return*/, QuizForms.loadFromJSON(User, response.toJSON().result)];
+                            result = User.loadFromJSON(response.toJSON().result);
+                            return [2 /*return*/, result];
                     }
                 });
             });
+        };
+        User.loadFromJSON = function (json) {
+            var result = QuizForms.loadFromJSON(User, json);
+            result.type = UserTypes[result.type];
+            return result;
         };
         /**
          * 取得目前登入的使用者資訊
@@ -894,7 +929,8 @@ var QuizForms;
                             result = response.toJSON().result;
                             if (result == null)
                                 return [2 /*return*/, null];
-                            return [2 /*return*/, QuizForms.loadFromJSON(User, result)];
+                            result = User.loadFromJSON(result);
+                            return [2 /*return*/, result];
                     }
                 });
             });

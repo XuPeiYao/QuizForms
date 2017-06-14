@@ -72,7 +72,7 @@
         /**
          * 類型
          */
-        public type: string;
+        public type: QuestionTypes;
 
         /**
          * 是否為必填
@@ -93,6 +93,13 @@
          * 子題目
          */
         public children: Question[];
+
+        /**
+         * 類型字串表示
+         */
+        public get typeString(): string {
+            return QuestionTypes[this.type];
+        }
 
         /**
          * 取得子題目
@@ -121,7 +128,7 @@
 
             var result = [];
             for (var i = 0; i < response.length; i++) {
-                result.push(loadFromJSON(Question, response[i]));
+                result.push(Question.loadFromJSON(response[i]));
             }
 
             return result;
@@ -154,7 +161,7 @@
                 response = await createHttpClient().postAsync(SystemVars.apiUrl + "question/" + (form.id || form), null, postData);
             }
             response = response.result;
-            return loadFromJSON(Question, response);
+            return Question.loadFromJSON(response.result);
         }
 
 
@@ -165,7 +172,7 @@
          */
         public static async add(parent: Question, question: Question): Promise<void> {
             await parent.getChildren();
-            parent.children.push(await Question.create(parent.formId, parent, QuestionTypes[question.type], question.text, question.order));
+            parent.children.push(await Question.create(parent.formId, parent, question.type, question.text, question.order));
         }
 
         /**
@@ -175,7 +182,7 @@
          */
         public static async addToForm(form:Form,question: Question): Promise<void> {
             await form.getQuestions();
-            form.questions.push(await Question.create((form.id || form), null, QuestionTypes[question.type], question.text, question.order));
+            form.questions.push(await Question.create((form.id || form), null, question.type, question.text, question.order));
         }
 
         /**
@@ -184,6 +191,12 @@
          */
         public static async remove(question: Question): Promise<void> {
             await createHttpClient().deleteAsync(SystemVars.apiUrl + "question/" + question.id);
+        }
+
+        public static loadFromJSON(json: any): Question {
+            var result = loadFromJSON(Question, json);
+            result.type = QuestionTypes[result.type];
+            return <Question>result;
         }
     }
 }
