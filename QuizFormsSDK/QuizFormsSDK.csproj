@@ -105,4 +105,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>XCOPY $(SolutionDir)QuizFormsSDK\dist $(SolutionDir)QuizFormsFrontend\assets\libraries\quizSDK /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>
