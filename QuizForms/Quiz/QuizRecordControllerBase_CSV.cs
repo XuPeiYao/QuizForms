@@ -33,14 +33,14 @@ namespace QuizForms.Quiz {
             long end = -1) {
             //寫過這張問卷的使用者
             string[] writedUsers = Database.Records
-                .Where(x => x.FormId.Equals(form) && x.Time >= start && x.Time < end)
+                .Where(x => x.FormId.Equals(form.Id) && x.Time >= start && x.Time < end)
                 .Select(x => x.UserId)
                 .Distinct()
                 .ToArray();
 
             var questions = Database
                 .Questions
-                .Where(x => x.FormId.Equals(form) && x.ParentId == null && x.IsQuestion())
+                .Where(x => x.FormId.Equals(form.Id) && x.ParentId == null && x.IsQuestion())
                 .OrderBy(x => x.Order).ToArray();
 
             List<IQuestion<IdType>> GetAllOptions(IQuestion<IdType> q)
