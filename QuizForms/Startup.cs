@@ -44,7 +44,7 @@ namespace QuizForms {
             });
             
             services.AddDbContext<QuizDbContext<Guid,Form,Question,Record>>(options => options.UseMySql(
-                Configuration["connectionString"]
+                Configuration["ConnectionString"]
             ));
             //services.AddMvc();
             // Add framework services.
