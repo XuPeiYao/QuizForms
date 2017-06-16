@@ -16,7 +16,7 @@ namespace QuizForms.Quiz.Models {
         /// </summary>
         [Key]
         IdType Id { get; set; }
-        
+
         /// <summary>
         /// 名稱
         /// </summary>
@@ -37,6 +37,10 @@ namespace QuizForms.Quiz.Models {
         /// 是否匿名
         /// </summary>
         bool Anonymous { get; set; }*/
+        /// <summary>
+        /// 限制使用者類型，Null為不限
+        /// </summary>
+        UserTypes UserType { get; set; }
 
         /// <summary>
         /// 是否允許重新填寫

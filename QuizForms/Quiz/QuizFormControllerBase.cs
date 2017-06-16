@@ -88,6 +88,12 @@ namespace QuizForms.Quiz {
                     result = result.Where(x => !x.Enable);
                     break;
             }
+
+            result = result.Where(x => {
+                if (x.UserType == UserTypes.Null) return true;
+                return x.UserType == User.Type;
+            });
+
             return new ApiResult() {
                 Result = result
             };

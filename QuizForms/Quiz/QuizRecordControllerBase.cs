@@ -44,6 +44,10 @@ namespace QuizForms.Quiz {
             
             ReCaptchaFactory.Vaild(code);
 
+            if (form.UserType != UserTypes.Null) {
+                if(User.Type != form.UserType) throw new UnauthorizedAccessException("該問卷您無法填寫");
+            }
+
             var questions = (from t in Database.Questions
                              //過濾出可回答問題
                              where t.FormId.Equals(form.Id) && t.ParentId == null
