@@ -12,15 +12,16 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace QuizForms.Quiz {
-    public partial class QuizRecordControllerBase<IdType, FormType, QuestionType, RecordType>
-        : QuizControllerBase<IdType, FormType, QuestionType, RecordType>
+    public partial class QuizRecordControllerBase<IdType, FormType, QuestionType, RecordType,WritedType>
+        : QuizControllerBase<IdType, FormType, QuestionType, RecordType,WritedType>
         where IdType : struct
         where FormType : class, IForm<IdType>, new()
         where QuestionType : class, IQuestion<IdType>, new()
-        where RecordType : class, IRecord<IdType>, new() {
+        where RecordType : class, IRecord<IdType>, new()
+        where WritedType : class, IWrited<IdType>, new() {
 
         public QuizRecordControllerBase(
-            QuizDbContext<IdType, FormType, QuestionType, RecordType> dbContext
+            QuizDbContext<IdType, FormType, QuestionType, RecordType,WritedType> dbContext
             ) : base(dbContext) {
         }
 

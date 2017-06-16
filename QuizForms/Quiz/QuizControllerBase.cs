@@ -10,19 +10,20 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace QuizForms.Quiz {
     [Route("api/[controller]")]
-    public class QuizControllerBase<IdType, FormType, QuestionType, RecordType>
+    public class QuizControllerBase<IdType, FormType, QuestionType, RecordType,WritedType>
         : EzAuthorityController<UserTypes>
         where IdType : struct
         where FormType : class, IForm<IdType>, new()
         where QuestionType : class, IQuestion<IdType>, new()
-        where RecordType : class, IRecord<IdType>, new() {
+        where RecordType : class, IRecord<IdType>, new()
+        where WritedType : class, IWrited<IdType>, new() {
 
         #region Session相關參數
         public const string SessionKeys_UserId = "UserId";
         public const string SessionKeys_Type = "Type";
         #endregion
 
-        public QuizDbContext<IdType, FormType, QuestionType, RecordType> Database { get; set; }
+        public QuizDbContext<IdType, FormType, QuestionType, RecordType,WritedType> Database { get; set; }
 
         public new LoginUser User {
             get {
@@ -54,7 +55,7 @@ namespace QuizForms.Quiz {
         public override UserTypes UserAuthority => User == null ? UserTypes.Null : User.Type;
 
         public QuizControllerBase(
-                QuizDbContext<IdType, FormType, QuestionType, RecordType> dbContext) : base() {
+                QuizDbContext<IdType, FormType, QuestionType, RecordType,WritedType> dbContext) : base() {
             this.Database = dbContext;
         }
 

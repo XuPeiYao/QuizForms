@@ -9,9 +9,9 @@ using QuizForms.Quiz.Models;
 using QuizForms.Models;
 
 namespace QuizForms.Controllers {
-    public class QuestionController : QuizQuestionControllerBase<Guid, Form, Question,Record> {
+    public class QuestionController : QuizQuestionControllerBase<Guid, Form, Question,Record,Writed> {
         public QuestionController(
-            QuizDbContext<Guid, Form, Question, Record> dbContext) 
+            QuizDbContext<Guid, Form, Question, Record,Writed> dbContext) 
             : base(dbContext) {
         }
     }

@@ -60,10 +60,10 @@ namespace QuizForms.Models {
             }
         }
 
-        private static QuizDbContext<Guid, Form, Question, Record> GetCurrentDbContext() {
-            return (QuizDbContext<Guid, Form, Question, Record>)
+        private static QuizDbContext<Guid, Form, Question, Record, Writed> GetCurrentDbContext() {
+            return (QuizDbContext<Guid, Form, Question, Record,Writed>)
                 HttpContextFactory.CurrentHttpContext
-                .RequestServices.GetService(typeof(QuizDbContext<Guid, Form, Question, Record>));
+                .RequestServices.GetService(typeof(QuizDbContext<Guid, Form, Question, Record,Writed>));
         }
     }
 }

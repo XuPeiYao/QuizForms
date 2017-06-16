@@ -43,7 +43,7 @@ namespace QuizForms {
                 options.CookieHttpOnly = true;
             });
             
-            services.AddDbContext<QuizDbContext<Guid,Form,Question,Record>>(options => options.UseMySql(
+            services.AddDbContext<QuizDbContext<Guid,Form,Question,Record, Writed>>(options => options.UseMySql(
                 Configuration["ConnectionString"]
             ));
             //services.AddMvc();

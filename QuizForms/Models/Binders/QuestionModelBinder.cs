@@ -12,10 +12,10 @@ namespace QuizForms.Models.Binders {
             if (ModelValue == ValueProviderResult.None) return;
 
 
-            var database = (QuizDbContext<Guid, Form, Question, Record>)bindingContext
+            var database = (QuizDbContext<Guid, Form, Question, Record,Writed>)bindingContext
                 .HttpContext
                 .RequestServices//透過DI取得本次Request產生之Scoped範圍的DbContext實例
-                .GetService(typeof(QuizDbContext<Guid, Form, Question, Record>));
+                .GetService(typeof(QuizDbContext<Guid, Form, Question, Record,Writed>));
 
             try {
                 var result = (from t in database.Questions

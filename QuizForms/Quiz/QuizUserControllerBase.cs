@@ -11,12 +11,13 @@ using EzCoreKit.AspNetCore.Mvc;
 using System.Security.Authentication;
 
 namespace QuizForms.Quiz {
-    public class QuizUserControllerBase<IdType, FormType, QuestionType, RecordType>
-        : QuizControllerBase<IdType, FormType, QuestionType, RecordType>
+    public class QuizUserControllerBase<IdType, FormType, QuestionType, RecordType,WritedType>
+        : QuizControllerBase<IdType, FormType, QuestionType, RecordType,WritedType>
         where IdType : struct
         where FormType : class, IForm<IdType>, new()
         where QuestionType : class, IQuestion<IdType>, new()
-        where RecordType : class, IRecord<IdType>, new() {
+        where RecordType : class, IRecord<IdType>, new()
+        where WritedType : class, IWrited<IdType>, new() {
 
         /// <summary>
         /// 身分授權提供者
@@ -27,7 +28,7 @@ namespace QuizForms.Quiz {
 
 
         public QuizUserControllerBase(
-            QuizDbContext<IdType, FormType, QuestionType, RecordType> dbContext,
+            QuizDbContext<IdType, FormType, QuestionType, RecordType,WritedType> dbContext,
             IAuthorizationProvider authProvider
             ) : base(dbContext) {
             this.AuthorizationProvider = authProvider;

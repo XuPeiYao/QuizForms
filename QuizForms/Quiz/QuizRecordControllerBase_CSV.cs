@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace QuizForms.Quiz {
-    public partial class QuizRecordControllerBase<IdType, FormType, QuestionType, RecordType> {
+    public partial class QuizRecordControllerBase<IdType, FormType, QuestionType, RecordType,WritedType> {
         public async Task<FileStreamResult> DownloadCSV(
             FormType form,
             long start = 0,

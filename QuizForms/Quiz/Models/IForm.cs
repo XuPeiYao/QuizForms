@@ -33,10 +33,11 @@ namespace QuizForms.Quiz.Models {
         /// </summary>
         bool Enable { get; set; }
 
-        /*/// <summary>
+        /// <summary>
         /// 是否匿名
         /// </summary>
-        bool Anonymous { get; set; }*/
+        bool Anonymous { get; set; }
+
         /// <summary>
         /// 限制使用者類型，Null為不限
         /// </summary>

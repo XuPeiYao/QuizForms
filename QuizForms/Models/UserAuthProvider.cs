@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QuizForms.Models{
     public class UserAuthProvider : IAuthorizationProvider {
-        public UserAuthProvider(QuizDbContext<Guid, Form, Question, Record> dbcontext) {
+        public UserAuthProvider(QuizDbContext<Guid, Form, Question, Record,Writed> dbcontext) {
 
         }
         public UserTypes Authorize(string userId, string password) {

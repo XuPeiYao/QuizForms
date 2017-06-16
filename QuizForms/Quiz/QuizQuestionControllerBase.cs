@@ -9,15 +9,16 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace QuizForms.Quiz {
-    public class QuizQuestionControllerBase<IdType, FormType, QuestionType, RecordType>
-        : QuizControllerBase<IdType, FormType, QuestionType, RecordType>
+    public class QuizQuestionControllerBase<IdType, FormType, QuestionType, RecordType,WritedType>
+        : QuizControllerBase<IdType, FormType, QuestionType, RecordType,WritedType>
         where IdType : struct
         where FormType : class, IForm<IdType>, new()
         where QuestionType : class, IQuestion<IdType>, new()
-        where RecordType : class, IRecord<IdType>, new() {
+        where RecordType : class, IRecord<IdType>, new()
+        where WritedType : class, IWrited<IdType>, new() {
 
         public QuizQuestionControllerBase(
-            QuizDbContext<IdType, FormType, QuestionType, RecordType> dbContext
+            QuizDbContext<IdType, FormType, QuestionType, RecordType,WritedType> dbContext
             ) : base(dbContext) {
         }
 
