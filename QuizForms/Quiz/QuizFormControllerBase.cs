@@ -110,6 +110,7 @@ namespace QuizForms.Quiz {
             [Required][FromRoute]FormType form) {
             return new ApiResult(){
                 Result = Database.Records.Any(x => x.FormId.Equals(form.Id) && x.UserId == User.Id)
+                      || Database.Writeds.Any(x=>x.FormId.Equals(form.Id) && x.UserId == User.Id)
             };
         }
 
@@ -121,9 +122,11 @@ namespace QuizForms.Quiz {
         [HttpGet("list/isWrited")]
         public async Task<JsonResult> IsWritedList() {
             var FormIds = Database.Records.Where(x => x.UserId == User.Id).Select(x => x.FormId).Distinct();
-            
+
+            var AnonFormIds = Database.Writeds.Where(x => x.UserId == User.Id).Select(x => x.FormId).Distinct();
+
             return new ApiResult() {
-                Result = FormIds
+                Result = FormIds.Concat(AnonFormIds).Distinct()
             };
         }
 
@@ -206,7 +209,6 @@ namespace QuizForms.Quiz {
             [FromForm]int? order,
             [FromForm]bool? rewriteable,
             [FromForm]string name = null) {
-
             if (form.OwnerId != User.Id) throw new UnauthorizedAccessException();
 
             if (enable.HasValue) form.Enable = enable.Value;

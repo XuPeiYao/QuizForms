@@ -42,7 +42,10 @@ namespace QuizForms.Quiz {
             if (Database.Records.Any(x => x.FormId.Equals(form.Id) && x.UserId==User.Id)) {
                 throw new InvalidOperationException("您已經作答過此問卷");
             }
-            
+            if (Database.Writeds.Any(x => x.FormId.Equals(form.Id) && x.UserId == User.Id)) {
+                throw new InvalidOperationException("您已經作答過此問卷");
+            }
+
             ReCaptchaFactory.Vaild(code);
 
             if (form.UserType != UserTypes.Null) {

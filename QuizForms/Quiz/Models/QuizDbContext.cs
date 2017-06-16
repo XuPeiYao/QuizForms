@@ -33,7 +33,13 @@ namespace QuizForms.Quiz.Models {
         /// 問卷紀錄
         /// </summary>
         public DbSet<RecordType> Records { get; set; }
-        
+
+        /// <summary>
+        /// 匿名問卷紀錄
+        /// </summary>
+        public DbSet<WritedType> Writeds { get; set; }
+
+
         public QuizDbContext(DbContextOptions<QuizDbContext<IdType, FormType, QuestionType, RecordType, WritedType>> options)
             : base(options) {
 
