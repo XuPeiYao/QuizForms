@@ -162,10 +162,23 @@ namespace QuizForms.Quiz {
                 var userAns = rawRecord[question.Id.ToString()];
                 record.AddRange(DeepRecord(question, userAns));
             }
+
+            var AnonUserName = "Anonymous_" + (Database.Writeds.Count(x => x.FormId.Equals(form.Id)) + 1);
             foreach (var item in record) {
                 item.FormId = form.Id;
                 item.Time = now.ToJsTime();
                 item.UserId = User.Id;
+
+                if (form.Anonymous) {
+                    item.UserId = AnonUserName;
+                }
+            }
+
+            if (form.Anonymous) {
+                Database.Writeds.Add(new WritedType() {
+                    FormId = form.Id,
+                    UserId = User.Id
+                });
             }
             
             Database.Records.AddRange(record);
