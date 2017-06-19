@@ -97,14 +97,25 @@ System.register(["@angular/core", "./app.component.base"], function (exports_1, 
                 });
                 FormListComponent.prototype.gotoForm = function (form) {
                     return __awaiter(this, void 0, void 0, function () {
-                        var writed;
+                        var writed, currentUser;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0: return [4 /*yield*/, form.isWrited()];
                                 case 1:
                                     writed = _a.sent();
+                                    return [4 /*yield*/, QuizForms.User.getCurrentUser()];
+                                case 2:
+                                    currentUser = _a.sent();
+                                    if (currentUser.type != form.userType) {
+                                        swal("不具有填寫權限", "此問卷有限定填寫身分，您無法填寫!", "error");
+                                        return [2 /*return*/];
+                                    }
+                                    if (!form.rewriteable) {
+                                        swal("此問卷您已經填寫過", "您已經填寫過這份問卷，本問卷無法重新填寫!", "error");
+                                        return [2 /*return*/];
+                                    }
                                     //檢查有沒有寫過的問卷
-                                    if (writed) {
+                                    if (writed && form.rewriteable) {
                                         swal({
                                             title: "此問卷您已經填寫過",
                                             text: "您已經填寫過這份問卷，您是否要刪除過去的紀錄以利進行填寫?",

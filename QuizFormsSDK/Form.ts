@@ -36,6 +36,11 @@
         public enable: boolean;
 
         /**
+         * 填寫身分限制
+         */
+        public userType: UserTypes = UserTypes.Null;
+
+        /**
          * 可否重新填寫
          */
         public rewriteable: boolean;
@@ -136,7 +141,7 @@
         public static async get(id: any): Promise<Form> {
             var response = (await createHttpClient().getAsync(SystemVars.apiUrl + "form/" + id)).toJSON();
 
-            return loadFromJSON(Form, response.result);
+            return Form.loadFromJSON(response.result);
         }
 
         /**
@@ -150,7 +155,7 @@
 
             var result = [];
             for (var i = 0; i < response.length; i++) {
-                result.push(loadFromJSON(Form, response[i]));
+                result.push(Form.loadFromJSON(response[i]));
             }
 
             return result;
@@ -187,11 +192,12 @@
          * @param rewriteable 是否可以重寫問卷
          * @param order 顯示順序
          */
-        public static async create(name: string, anonymous: boolean = true, rewriteable: boolean = false, order: number = null)
+        public static async create(name: string, anonymous: boolean = true, userType: UserTypes = UserTypes.Null, rewriteable: boolean = false, order: number = null)
             : Promise<Form>{
             var postData = {
                 name: name,
                 anonymous: anonymous,
+                userType: userType,
                 rewriteable: rewriteable
             };
             if (order) postData['order'] = order;
@@ -199,7 +205,7 @@
             var client = createHttpClient();
             var response = (await client.postAsync(SystemVars.apiUrl + "form", null, postData)).toJSON();
 
-            return loadFromJSON(Form, response.result);
+            return Form.loadFromJSON(response.result);
         }
 
         /**
@@ -207,7 +213,7 @@
          * @param form 問卷
          */
         public static async add(form: Form): Promise<void> {
-            await Form.create(form.name, form.anonymous, form.rewriteable, form.order);
+            await Form.create(form.name, form.anonymous, form.userType, form.rewriteable, form.order);
         }
 
         /**
@@ -264,6 +270,11 @@
             if (end) {
                 result += "&end=" + end.getTime();
             }
+            return result;
+        }
+        public static loadFromJSON(json: any): Form {
+            var result = <Form>loadFromJSON(Form, json);
+            result.userType = <UserTypes><any>UserTypes[result.userType];
             return result;
         }
     }

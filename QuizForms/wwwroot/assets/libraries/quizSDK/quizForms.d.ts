@@ -33,6 +33,10 @@ declare module QuizForms {
          */
         enable: boolean;
         /**
+         * 填寫身分限制
+         */
+        userType: UserTypes;
+        /**
          * 可否重新填寫
          */
         rewriteable: boolean;
@@ -116,7 +120,7 @@ declare module QuizForms {
          * @param rewriteable 是否可以重寫問卷
          * @param order 顯示順序
          */
-        static create(name: string, anonymous?: boolean, rewriteable?: boolean, order?: number): Promise<Form>;
+        static create(name: string, anonymous?: boolean, userType?: UserTypes, rewriteable?: boolean, order?: number): Promise<Form>;
         /**
          * 新增問卷
          * @param form 問卷
@@ -152,6 +156,7 @@ declare module QuizForms {
          * @param end 結束時間
          */
         static getDownloadUrl(form: Form, type: "csv" | "excel", start: Date, end?: Date): Promise<string>;
+        static loadFromJSON(json: any): Form;
     }
 }
 declare module QuizForms {

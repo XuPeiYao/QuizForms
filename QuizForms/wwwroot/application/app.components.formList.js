@@ -103,8 +103,12 @@ System.register(["@angular/core", "./app.component.base"], function (exports_1, 
                                 case 0: return [4 /*yield*/, form.isWrited()];
                                 case 1:
                                     writed = _a.sent();
+                                    if (!form.rewriteable) {
+                                        swal("此文卷您已經填寫過", "您已經填寫過這份問卷，本問卷無法重新填寫!", "error");
+                                        return [2 /*return*/];
+                                    }
                                     //檢查有沒有寫過的問卷
-                                    if (writed) {
+                                    if (writed && form.rewriteable) {
                                         swal({
                                             title: "此問卷您已經填寫過",
                                             text: "您已經填寫過這份問卷，您是否要刪除過去的紀錄以利進行填寫?",

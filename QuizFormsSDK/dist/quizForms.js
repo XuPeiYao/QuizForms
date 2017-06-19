@@ -59,6 +59,10 @@ var QuizForms;
     var Form = (function () {
         function Form() {
             /**
+             * 填寫身分限制
+             */
+            this.userType = QuizForms.UserTypes.Null;
+            /**
              * 是否已經寫過
              */
             this.writed = null;
@@ -213,7 +217,7 @@ var QuizForms;
                         case 0: return [4 /*yield*/, QuizForms.createHttpClient().getAsync(QuizForms.SystemVars.apiUrl + "form/" + id)];
                         case 1:
                             response = (_a.sent()).toJSON();
-                            return [2 /*return*/, QuizForms.loadFromJSON(Form, response.result)];
+                            return [2 /*return*/, Form.loadFromJSON(response.result)];
                     }
                 });
             });
@@ -235,7 +239,7 @@ var QuizForms;
                             response = (_a.sent()).toJSON().result;
                             result = [];
                             for (i = 0; i < response.length; i++) {
-                                result.push(QuizForms.loadFromJSON(Form, response[i]));
+                                result.push(Form.loadFromJSON(response[i]));
                             }
                             return [2 /*return*/, result];
                     }
@@ -286,8 +290,9 @@ var QuizForms;
          * @param rewriteable 是否可以重寫問卷
          * @param order 顯示順序
          */
-        Form.create = function (name, anonymous, rewriteable, order) {
+        Form.create = function (name, anonymous, userType, rewriteable, order) {
             if (anonymous === void 0) { anonymous = true; }
+            if (userType === void 0) { userType = QuizForms.UserTypes.Null; }
             if (rewriteable === void 0) { rewriteable = false; }
             if (order === void 0) { order = null; }
             return __awaiter(this, void 0, void 0, function () {
@@ -298,6 +303,7 @@ var QuizForms;
                             postData = {
                                 name: name,
                                 anonymous: anonymous,
+                                userType: userType,
                                 rewriteable: rewriteable
                             };
                             if (order)
@@ -306,7 +312,7 @@ var QuizForms;
                             return [4 /*yield*/, client.postAsync(QuizForms.SystemVars.apiUrl + "form", null, postData)];
                         case 1:
                             response = (_a.sent()).toJSON();
-                            return [2 /*return*/, QuizForms.loadFromJSON(Form, response.result)];
+                            return [2 /*return*/, Form.loadFromJSON(response.result)];
                     }
                 });
             });
@@ -319,7 +325,7 @@ var QuizForms;
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, Form.create(form.name, form.anonymous, form.rewriteable, form.order)];
+                        case 0: return [4 /*yield*/, Form.create(form.name, form.anonymous, form.userType, form.rewriteable, form.order)];
                         case 1:
                             _a.sent();
                             return [2 /*return*/];
@@ -420,6 +426,11 @@ var QuizForms;
                     return [2 /*return*/, result];
                 });
             });
+        };
+        Form.loadFromJSON = function (json) {
+            var result = QuizForms.loadFromJSON(Form, json);
+            result.userType = QuizForms.UserTypes[result.userType];
+            return result;
         };
         return Form;
     }());
