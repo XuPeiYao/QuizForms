@@ -234,7 +234,7 @@ namespace QuizForms.Quiz {
                 form.Rewriteable = rewriteable.Value;
             }
 
-            if (userType.HasValue) form.UserType = userType;
+            if (userType.HasValue) form.UserType = userType.Value;
 
             if (order.HasValue) {
                 form.Order = order.Value;
