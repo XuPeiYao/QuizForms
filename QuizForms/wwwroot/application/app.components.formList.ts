@@ -37,8 +37,12 @@ export class FormListComponent extends ComponentBase {
 
     public async gotoForm(form:QuizForms.Form): Promise<void>{
         var writed = await form.isWrited();
-        if(!form.rewriteable){
-            swal("此文卷您已經填寫過", "您已經填寫過這份問卷，本問卷無法重新填寫!", "error")
+
+        var currentUser = await QuizForms.User.getCurrentUser();
+
+        if(form.userType != QuizForms.UserTypes.Null && 
+           (currentUser.type != form.userType)){
+            swal("不具有填寫權限","此問卷有限定填寫身分，您無法填寫!","error");
             return;
         }
 

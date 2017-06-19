@@ -106,12 +106,9 @@ System.register(["@angular/core", "./app.component.base"], function (exports_1, 
                                     return [4 /*yield*/, QuizForms.User.getCurrentUser()];
                                 case 2:
                                     currentUser = _a.sent();
-                                    if (currentUser.type != form.userType) {
+                                    if (form.userType != QuizForms.UserTypes.Null &&
+                                        (currentUser.type != form.userType)) {
                                         swal("不具有填寫權限", "此問卷有限定填寫身分，您無法填寫!", "error");
-                                        return [2 /*return*/];
-                                    }
-                                    if (!form.rewriteable) {
-                                        swal("此問卷您已經填寫過", "您已經填寫過這份問卷，本問卷無法重新填寫!", "error");
                                         return [2 /*return*/];
                                     }
                                     //檢查有沒有寫過的問卷

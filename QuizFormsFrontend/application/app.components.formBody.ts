@@ -13,7 +13,7 @@ export class FormBodyComponent extends ComponentBase {
       var THIS = this;
       this.AfterContentInit = function(){
             THIS.grecaptchaObject = grecaptcha.render(document.getElementById("g-recaptcha"), {
-                'sitekey' : '6Le-fiQUAAAAANNi4jQ9oG8dO5suL02nJ_jr1KLE',
+                'sitekey' : 'KEY',
                 'callback' : function(response) {
                     THIS.grecaptchaCode = response;
                 }
@@ -69,10 +69,10 @@ export class FormBodyComponent extends ComponentBase {
     }
 
     public async sumbitDialog(){
-        if(this.grecaptchaCode == null){
+        /*if(this.grecaptchaCode == null){
             swal("尚未進行機器人驗證", "在您送出此問卷前，您必須勾選「我不是機器人」選項", "error");
             return;
-        }
+        }*/
         var THIS = this;
         swal({
            title: "確認送出",

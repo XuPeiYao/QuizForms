@@ -809,6 +809,13 @@ var QuizForms;
         Question.loadFromJSON = function (json) {
             var result = QuizForms.loadFromJSON(Question, json);
             result.type = QuestionTypes[result.type];
+            if (result.children && result.children.length) {
+                var ary = [];
+                for (var i = 0; i < result.children.length; i++) {
+                    ary.push(Question.loadFromJSON(result.children[i]));
+                }
+                result.children = ary;
+            }
             return result;
         };
         return Question;

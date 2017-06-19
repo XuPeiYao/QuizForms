@@ -97,6 +97,7 @@ System.register(["@angular/core"], function (exports_1, context_1) {
                             }
                             break;
                     }
+                    console.log(result);
                     return result;
                 };
                 Object.defineProperty(QuestionBase.prototype, "ansObject", {

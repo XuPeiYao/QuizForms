@@ -68,6 +68,7 @@ export class QuestionBase {
                 }
                 break;
         }
+        console.log(result);
         return result;
     }
 

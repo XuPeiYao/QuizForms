@@ -194,8 +194,16 @@
         }
 
         public static loadFromJSON(json: any): Question {
-            var result = loadFromJSON(Question, json);
-            result.type = QuestionTypes[result.type];
+            var result = <Question>loadFromJSON(Question, json);
+            result.type = <QuestionTypes><any>QuestionTypes[result.type];
+            
+            if (result.children && result.children.length) {
+                var ary = [];
+                for (let i = 0; i < result.children.length; i++) {
+                    ary.push(Question.loadFromJSON(result.children[i]));
+                }
+                result.children = ary;
+            }
             return <Question>result;
         }
     }
