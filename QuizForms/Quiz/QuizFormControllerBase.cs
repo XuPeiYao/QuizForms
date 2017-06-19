@@ -144,17 +144,20 @@ namespace QuizForms.Quiz {
             [FromForm]int? order,
             [FromForm]bool? rewriteable,
             [FromForm]bool? anonymous = true,
+            [FromForm]UserTypes userType = UserTypes.Null,
             [FromForm]string name = "未命名問卷") {
             FormType instance = default(FormType);
             Database.Forms.Add(instance = new FormType());
             instance.Name = name;
             instance.OwnerId = User.Id;
-
+            instance.UserType = userType;
+            
             if(anonymous.HasValue)instance.Anonymous = anonymous.Value;
 
             if(anonymous.HasValue && anonymous.Value && rewriteable.HasValue && rewriteable.Value) {
                 throw new InvalidOperationException("匿名問卷不可設定為可重新填寫");
             }
+                        
 
             if(rewriteable.HasValue)instance.Rewriteable = rewriteable.Value;
             if (order.HasValue)instance.Order = order.Value;
@@ -216,6 +219,7 @@ namespace QuizForms.Quiz {
             [Required][FromRoute]FormType form,
             [FromForm]bool? enable,
             [FromForm]int? order,
+            [FromForm]UserTypes? userType,
             [FromForm]bool? rewriteable,
             [FromForm]string name = null) {
             if (form.OwnerId != User.Id) throw new UnauthorizedAccessException();
@@ -229,6 +233,8 @@ namespace QuizForms.Quiz {
 
                 form.Rewriteable = rewriteable.Value;
             }
+
+            if (userType.HasValue) form.UserType = userType;
 
             if (order.HasValue) {
                 form.Order = order.Value;
