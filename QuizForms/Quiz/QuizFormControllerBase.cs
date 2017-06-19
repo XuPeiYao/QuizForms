@@ -133,26 +133,31 @@ namespace QuizForms.Quiz {
         /// <summary>
         /// 新增問卷
         /// </summary>
-        /// <param name="name">名稱</param>
-        /// <returns>操作結果</returns>
+        /// <param name="order">顯示順序</param>
+        /// <param name="rewriteable">是否重寫</param>
+        /// <param name="anonymous">是否匿名</param>
+        /// <param name="name">問卷名稱</param>
+        /// <returns></returns>
         [HttpPost]
         [Authority(Minimum = UserTypes.Admin)]
         public async Task<JsonResult> Add(
             [FromForm]int? order,
             [FromForm]bool? rewriteable,
+            [FromForm]bool? anonymous = true,
             [FromForm]string name = "未命名問卷") {
             FormType instance = default(FormType);
             Database.Forms.Add(instance = new FormType());
             instance.Name = name;
             instance.OwnerId = User.Id;
 
-            if (rewriteable.HasValue) {
-                instance.Rewriteable = rewriteable.Value;
+            if(anonymous.HasValue)instance.Anonymous = anonymous.Value;
+
+            if(anonymous.HasValue && anonymous.Value && rewriteable.HasValue && rewriteable.Value) {
+                throw new InvalidOperationException("匿名問卷不可設定為可重新填寫");
             }
 
-            if (order.HasValue) {
-                instance.Order = order.Value;
-            }
+            if(rewriteable.HasValue)instance.Rewriteable = rewriteable.Value;
+            if (order.HasValue)instance.Order = order.Value;
 
             await Database.SaveChangesAsync();
 
@@ -173,6 +178,10 @@ namespace QuizForms.Quiz {
             if (form.OwnerId != User.Id) throw new UnauthorizedAccessException();
 
             Database.Records.RemoveRange(from t in Database.Records
+                                         where t.FormId.Equals(form.Id)
+                                         select t);
+
+            Database.Writeds.RemoveRange(from t in Database.Writeds
                                          where t.FormId.Equals(form.Id)
                                          select t);
 
@@ -214,6 +223,10 @@ namespace QuizForms.Quiz {
             if (enable.HasValue) form.Enable = enable.Value;
             if (name != null) form.Name = name;
             if (rewriteable.HasValue) {
+                if (form.Anonymous && rewriteable.Value) {
+                    throw new InvalidOperationException("匿名問卷不可設定為可重新填寫");
+                }
+
                 form.Rewriteable = rewriteable.Value;
             }
 
