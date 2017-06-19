@@ -286,7 +286,8 @@ var QuizForms;
          * @param rewriteable 是否可以重寫問卷
          * @param order 顯示順序
          */
-        Form.create = function (name, rewriteable, order) {
+        Form.create = function (name, anonymous, rewriteable, order) {
+            if (anonymous === void 0) { anonymous = true; }
             if (rewriteable === void 0) { rewriteable = false; }
             if (order === void 0) { order = null; }
             return __awaiter(this, void 0, void 0, function () {
@@ -296,6 +297,7 @@ var QuizForms;
                         case 0:
                             postData = {
                                 name: name,
+                                anonymous: anonymous,
                                 rewriteable: rewriteable
                             };
                             if (order)
@@ -317,7 +319,7 @@ var QuizForms;
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, Form.create(form.name, form.rewriteable, form.order)];
+                        case 0: return [4 /*yield*/, Form.create(form.name, form.anonymous, form.rewriteable, form.order)];
                         case 1:
                             _a.sent();
                             return [2 /*return*/];

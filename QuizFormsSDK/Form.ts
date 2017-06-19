@@ -41,6 +41,11 @@
         public rewriteable: boolean;
 
         /**
+         * 是否為匿名問卷
+         */
+        public anonymous: boolean;
+
+        /**
          * 顯示順序
          */
         public order: number;
@@ -182,10 +187,11 @@
          * @param rewriteable 是否可以重寫問卷
          * @param order 顯示順序
          */
-        public static async create(name: string, rewriteable: boolean = false, order: number = null)
+        public static async create(name: string, anonymous: boolean = true, rewriteable: boolean = false, order: number = null)
             : Promise<Form>{
             var postData = {
                 name: name,
+                anonymous: anonymous,
                 rewriteable: rewriteable
             };
             if (order) postData['order'] = order;
@@ -201,7 +207,7 @@
          * @param form 問卷
          */
         public static async add(form: Form): Promise<void> {
-            await Form.create(form.name, form.rewriteable, form.order);
+            await Form.create(form.name, form.anonymous, form.rewriteable, form.order);
         }
 
         /**

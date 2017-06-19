@@ -37,6 +37,10 @@ declare module QuizForms {
          */
         rewriteable: boolean;
         /**
+         * 是否為匿名問卷
+         */
+        anonymous: boolean;
+        /**
          * 顯示順序
          */
         order: number;
@@ -112,7 +116,7 @@ declare module QuizForms {
          * @param rewriteable 是否可以重寫問卷
          * @param order 顯示順序
          */
-        static create(name: string, rewriteable?: boolean, order?: number): Promise<Form>;
+        static create(name: string, anonymous?: boolean, rewriteable?: boolean, order?: number): Promise<Form>;
         /**
          * 新增問卷
          * @param form 問卷
