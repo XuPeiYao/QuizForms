@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using QuizForms.Quiz;
+using Newtonsoft.Json;
 
 namespace QuizForms.Models
 {
@@ -29,6 +30,7 @@ namespace QuizForms.Models
         }
 
         [Column(name: "userType")]
+        [JsonIgnore]
         public string UserTypeString { get; set; }
 
         public Form() {
